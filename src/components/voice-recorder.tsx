@@ -1,3 +1,4 @@
+
 "use client";
 
 import type React from 'react';
@@ -5,10 +6,11 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, Square, Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface VoiceRecorderProps {
   onRecordingComplete: (audioBlob: Blob) => void;
-  onRecordingError: (error: string) => void;
+  onRecordingError: (errorKey: string, params?: Record<string, string|number>) => void;
   isProcessing: boolean;
 }
 
@@ -18,6 +20,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const [showPermissionMessage, setShowPermissionMessage] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     return () => {
@@ -30,14 +33,13 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
   const requestPermission = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Close the stream immediately after permission is granted, if not starting recording
       stream.getTracks().forEach(track => track.stop());
       setHasPermission(true);
       setShowPermissionMessage(false);
       return true;
     } catch (err) {
       console.error('Error requesting microphone permission:', err);
-      onRecordingError('Microphone permission denied. Please enable it in your browser settings.');
+      onRecordingError('microphonePermissionDeniedError');
       setHasPermission(false);
       setShowPermissionMessage(true);
       return false;
@@ -64,12 +66,12 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
       mediaRecorderRef.current.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         onRecordingComplete(audioBlob);
-        stream.getTracks().forEach(track => track.stop()); // Release microphone
+        stream.getTracks().forEach(track => track.stop());
       };
       
       mediaRecorderRef.current.onerror = (event) => {
         console.error('MediaRecorder error:', event);
-        onRecordingError('An error occurred during recording.');
+        onRecordingError('unexpectedError'); // Generic error key
         setIsRecording(false);
         stream.getTracks().forEach(track => track.stop());
       };
@@ -78,8 +80,8 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
       setIsRecording(true);
     } catch (err) {
       console.error('Error starting recording:', err);
-      onRecordingError('Could not start recording. Please ensure microphone is available.');
-      setHasPermission(false); // Re-set permission state as it might have failed
+      onRecordingError('unexpectedError'); // Generic error key
+      setHasPermission(false);
       setShowPermissionMessage(true);
     }
   };
@@ -99,6 +101,9 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
     }
   };
 
+  const buttonText = isProcessing ? t('processingAudioButton') : isRecording ? t('stopRecordingButton') : t('recordVoiceButton');
+  const ariaLabel = isRecording ? t('stopRecordingButton') : (isProcessing ? t('processingAudioButton') : t('recordVoiceButton'));
+
   return (
     <div className="flex flex-col items-center space-y-3">
       <Button
@@ -110,7 +115,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
           isProcessing && "opacity-75 cursor-not-allowed"
         )}
         aria-live="polite"
-        aria-label={isRecording ? "Stop recording" : (isProcessing ? "Processing audio" : "Start recording")}
+        aria-label={ariaLabel}
       >
         {isProcessing ? (
           <Loader2 className="mr-2 h-6 w-6 animate-spin" />
@@ -119,18 +124,19 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete, onRe
         ) : (
           <Mic className="mr-2 h-6 w-6" />
         )}
-        {isProcessing ? 'Processing...' : isRecording ? 'Stop Recording' : 'Record Voice'}
+        {buttonText}
       </Button>
       {isRecording && (
         <div className="flex items-center text-sm text-muted-foreground animate-pulse">
           <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-          Recording...
+          {/* Recording... text can be added to locales if needed */}
+          Recording... 
         </div>
       )}
       {showPermissionMessage && !hasPermission && (
          <div className="mt-2 text-sm text-destructive flex items-center">
            <AlertCircle className="w-4 h-4 mr-1" />
-           Microphone permission denied. Please enable it in browser settings.
+           {t('microphonePermissionDeniedError')}
          </div>
       )}
     </div>

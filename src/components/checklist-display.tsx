@@ -1,9 +1,11 @@
+
 "use client";
 
 import type React from 'react';
 import ChecklistItemComponent from './checklist-item';
 import type { ChecklistItemType } from '@/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ChecklistDisplayProps {
   items: ChecklistItemType[];
@@ -13,11 +15,12 @@ interface ChecklistDisplayProps {
 }
 
 const ChecklistDisplay: React.FC<ChecklistDisplayProps> = ({ items, onToggleItem, onDeleteItem, disabled }) => {
+  const { t } = useLanguage();
   if (items.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-8">
-        <p className="text-lg">Your checklist is empty.</p>
-        <p className="text-sm">Use your voice or type to add tasks!</p>
+        <p className="text-lg">{t('emptyChecklistMessage')}</p>
+        <p className="text-sm">{t('emptyChecklistSubMessage')}</p>
       </div>
     );
   }

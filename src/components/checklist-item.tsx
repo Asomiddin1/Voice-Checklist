@@ -1,3 +1,4 @@
+
 "use client";
 
 import type React from 'react';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import type { ChecklistItemType } from '@/types';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ChecklistItemProps {
   item: ChecklistItemType;
@@ -15,6 +17,7 @@ interface ChecklistItemProps {
 }
 
 const ChecklistItemComponent: React.FC<ChecklistItemProps> = ({ item, onToggle, onDelete, disabled }) => {
+  const { t } = useLanguage();
   return (
     <div className="flex items-center space-x-3 p-3 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
       <Checkbox
@@ -42,7 +45,7 @@ const ChecklistItemComponent: React.FC<ChecklistItemProps> = ({ item, onToggle, 
         onClick={() => onDelete(item.id)}
         className="text-muted-foreground hover:text-destructive"
         disabled={disabled}
-        aria-label={`Delete task ${item.text}`}
+        aria-label={t('deleteTaskAriaLabel', { taskText: item.text })}
       >
         <Trash2 className="h-4 w-4" />
       </Button>

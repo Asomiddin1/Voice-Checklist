@@ -1,3 +1,4 @@
+
 "use client";
 
 import type React from 'react';
@@ -5,6 +6,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ManualAddFormProps {
   onAddItem: (text: string) => void;
@@ -13,6 +15,7 @@ interface ManualAddFormProps {
 
 const ManualAddForm: React.FC<ManualAddFormProps> = ({ onAddItem, disabled }) => {
   const [inputText, setInputText] = useState('');
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,14 +31,14 @@ const ManualAddForm: React.FC<ManualAddFormProps> = ({ onAddItem, disabled }) =>
         type="text"
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
-        placeholder="Add a new task manually"
+        placeholder={t('addItemManuallyPlaceholder')}
         className="flex-grow"
         disabled={disabled}
-        aria-label="New task input"
+        aria-label={t('addItemManuallyPlaceholder')}
       />
-      <Button type="submit" disabled={disabled || !inputText.trim()} aria-label="Add task">
+      <Button type="submit" disabled={disabled || !inputText.trim()} aria-label={t('addButton')}>
         <Plus className="h-4 w-4 mr-2 sm:mr-0 md:mr-2" />
-        <span className="hidden sm:inline md:hidden lg:inline">Add</span>
+        <span className="hidden sm:inline md:hidden lg:inline">{t('addButton')}</span>
       </Button>
     </form>
   );
