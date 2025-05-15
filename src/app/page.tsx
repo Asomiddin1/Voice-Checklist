@@ -10,11 +10,11 @@ import ManualAddForm from '@/components/manual-add-form';
 import ChecklistDisplay from '@/components/checklist-display';
 import type { ChecklistItemType } from '@/types';
 import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
-// import { checklistAutoGenerator, ChecklistAutoGeneratorInput } from '@/ai/flows/checklist-auto-generator'; // Replaced by processVoiceCommand
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { AlertTriangle, Loader2 as IconLoader } from 'lucide-react'; // Renamed Loader2 to avoid conflict
+import { Loader2 as IconLoader } from 'lucide-react'; // Renamed Loader2 to avoid conflict
+import VoiceCommandsModal from '@/components/voice-commands-modal';
 
 
 async function blobToDataURI(blob: Blob): Promise<string> {
@@ -94,40 +94,45 @@ export default function VoiceChecklistPage() {
 
       let commandsProcessed = 0;
       let itemsAddedFromCommands = 0;
+      let itemsToggled = 0;
+      let itemsDeleted = 0;
 
       if (commandOutput.recognizedCommands && commandOutput.recognizedCommands.length > 0) {
         commandOutput.recognizedCommands.forEach(cmd => {
           commandsProcessed++;
           if (cmd.command === 'toggle' && cmd.targetItemId) {
-            handleToggleItem(cmd.targetItemId, false); // silent toggle, toast later
+            handleToggleItem(cmd.targetItemId, false); 
+            itemsToggled++;
             toast({ title: t('commandProcessedToastTitle'), description: t('itemToggledToastDescription', {itemName: cmd.itemName})});
           } else if (cmd.command === 'delete' && cmd.targetItemId) {
-            handleDeleteItem(cmd.targetItemId, false); // silent delete, toast later
+            handleDeleteItem(cmd.targetItemId, false); 
+            itemsDeleted++;
             toast({ title: t('commandProcessedToastTitle'), description: t('itemDeletedByVoiceToastDescription', {itemName: cmd.itemName})});
           } else if (cmd.command === 'add' && cmd.itemName) {
-            addMultipleItems([cmd.itemName], false); // silent add, toast later
-            toast({ title: t('commandProcessedToastTitle'), description: t('itemAddedByVoiceToastDescription', {itemName: cmd.itemName})});
+            addMultipleItems([cmd.itemName], false); 
             itemsAddedFromCommands++;
+            // Toast for individual adds handled by addMultipleItems if singular
           }
         });
       }
 
       if (commandOutput.newItemsFromSpeech && commandOutput.newItemsFromSpeech.length > 0) {
-        addMultipleItems(commandOutput.newItemsFromSpeech, false); // silent add
+        addMultipleItems(commandOutput.newItemsFromSpeech, false);
         itemsAddedFromCommands += commandOutput.newItemsFromSpeech.length;
       }
       
-      if (commandsProcessed > 0 && itemsAddedFromCommands === 0 && commandOutput.newItemsFromSpeech.length === 0) {
-         // Only commands like toggle/delete happened
-      } else if (itemsAddedFromCommands > 0) {
+      if (itemsAddedFromCommands > 0) {
          toast({
           title: t('itemsAddedToastTitle'),
           description: t('itemsAddedToastDescription', {count: itemsAddedFromCommands}),
         });
-      } else if (commandsProcessed === 0 && commandOutput.newItemsFromSpeech.length === 0) {
+      } else if (itemsToggled > 0 || itemsDeleted > 0) {
+        // Toasts for toggle/delete are individual. Maybe a summary toast if many?
+        // For now, individual toasts are fine.
+      } else if (commandsProcessed === 0 && itemsAddedFromCommands === 0 ) {
          toast({
-          title: t('noCommandsOrItemsFound'),
-          description: t('noCommandsOrItemsFound'),
+          title: t('noCommandsOrItemsFoundTitle'),
+          description: t('noCommandsOrItemsFoundDescription'),
         });
       }
 
@@ -178,12 +183,22 @@ export default function VoiceChecklistPage() {
   };
 
   const handleToggleItem = (id: string, showToast: boolean = true) => {
+    let itemName = "";
     setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? { ...item, completed: !item.completed } : item
-      )
+      prevItems.map(item => {
+        if (item.id === id) {
+          itemName = item.text;
+          return { ...item, completed: !item.completed };
+        }
+        return item;
+      })
     );
-    // Toast for toggle is handled by voice command processor if applicable
+     if (showToast) {
+        toast({
+          title: t('itemToggledManuallyToastTitle'),
+          description: t('itemToggledManuallyToastDescription', { itemName: itemName.substring(0,30) })
+      });
+    }
   };
 
   const handleDeleteItem = (id: string, showToast: boolean = true) => {
@@ -196,11 +211,11 @@ export default function VoiceChecklistPage() {
     }
   };
   
-  if (!isMounted || !t('voiceChecklistTitle')) { // Wait for translations too
+  if (!isMounted || !t('voiceChecklistTitle')) { 
      return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
         <IconLoader className="h-16 w-16 animate-spin text-primary" />
-        <p className="mt-4 text-lg text-foreground">Loading Checklist...</p>
+        <p className="mt-4 text-lg text-foreground">{t('loadingChecklist')}</p>
       </div>
     );
   }
@@ -222,12 +237,15 @@ export default function VoiceChecklistPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
-          <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20">
+          <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20 space-y-3">
              <VoiceRecorder 
                 onRecordingComplete={handleRecordingComplete} 
                 onRecordingError={handleRecordingError}
                 isProcessing={isLoading}
              />
+             <div className="flex justify-center">
+                <VoiceCommandsModal />
+             </div>
           </div>
           
           <div className="flex items-center space-x-2">
@@ -254,21 +272,3 @@ export default function VoiceChecklistPage() {
     </div>
   );
 }
-
-// Custom Loader2 component for initial loading screen (renamed to IconLoader to avoid conflicts)
-const Loader2 = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-  </svg>
-);
