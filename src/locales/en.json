@@ -53,5 +53,13 @@
   "commandToggleExample2": "Or just say an existing item's name: \"Milk\"",
   "commandCategoryDelete": "Deleting Items:",
   "commandDeleteExample1": "Say: \"Delete eggs\", \"Remove bread\"",
-  "closeButton": "Close"
+  "closeButton": "Close",
+  "editButtonAriaLabel": "Edit task {taskText}",
+  "saveButtonAriaLabel": "Save changes",
+  "cancelButtonAriaLabel": "Cancel editing",
+  "editItemInputAriaLabel": "Edit text for item {taskText}",
+  "itemUpdatedToastTitle": "Item Updated",
+  "itemUpdatedToastDescription": "Item \"{itemText}\" has been updated.",
+  "itemTextCannotBeEmptyTitle": "Cannot Save Empty Item",
+  "itemTextCannotBeEmptyDescription": "Item text cannot be empty. Edit cancelled."
 }

@@ -11,10 +11,23 @@ interface ChecklistDisplayProps {
   items: ChecklistItemType[];
   onToggleItem: (id:string) => void;
   onDeleteItem: (id: string) => void;
+  onStartEdit: (item: ChecklistItemType) => void;
+  onSaveEditText: (id: string, newText: string) => void;
+  onCancelEdit: () => void;
+  editingItemId: string | null;
   disabled?: boolean;
 }
 
-const ChecklistDisplay: React.FC<ChecklistDisplayProps> = ({ items, onToggleItem, onDeleteItem, disabled }) => {
+const ChecklistDisplay: React.FC<ChecklistDisplayProps> = ({ 
+  items, 
+  onToggleItem, 
+  onDeleteItem, 
+  onStartEdit,
+  onSaveEditText,
+  onCancelEdit,
+  editingItemId,
+  disabled 
+}) => {
   const { t } = useLanguage();
   if (items.length === 0) {
     return (
@@ -34,7 +47,11 @@ const ChecklistDisplay: React.FC<ChecklistDisplayProps> = ({ items, onToggleItem
             item={item}
             onToggle={onToggleItem}
             onDelete={onDeleteItem}
-            disabled={disabled}
+            onStartEdit={onStartEdit}
+            onSaveEditText={onSaveEditText}
+            onCancelEdit={onCancelEdit}
+            editingItemId={editingItemId}
+            disabled={disabled || (editingItemId !== null && editingItemId !== item.id)} // Disable other items if one is being edited
           />
         ))}
       </div>

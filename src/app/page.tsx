@@ -13,7 +13,7 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader } from 'lucide-react'; // Renamed Loader2 to avoid conflict
+import { Loader2 as IconLoader } from 'lucide-react'; 
 import VoiceCommandsModal from '@/components/voice-commands-modal';
 
 
@@ -37,7 +37,8 @@ export default function VoiceChecklistPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
-  const { t, locale } = useLanguage(); // Get t function and current locale
+  const { t, locale } = useLanguage(); 
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -64,6 +65,7 @@ export default function VoiceChecklistPage() {
 
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
+    if (editingItemId) setEditingItemId(null); // Cancel edit mode if voice command starts
     setIsLoading(true);
     try {
       const audioDataUri = await blobToDataURI(audioBlob);
@@ -111,7 +113,6 @@ export default function VoiceChecklistPage() {
           } else if (cmd.command === 'add' && cmd.itemName) {
             addMultipleItems([cmd.itemName], false); 
             itemsAddedFromCommands++;
-            // Toast for individual adds handled by addMultipleItems if singular
           }
         });
       }
@@ -127,15 +128,13 @@ export default function VoiceChecklistPage() {
           description: t('itemsAddedToastDescription', {count: itemsAddedFromCommands}),
         });
       } else if (itemsToggled > 0 || itemsDeleted > 0) {
-        // Toasts for toggle/delete are individual. Maybe a summary toast if many?
-        // For now, individual toasts are fine.
+        // Individual toasts are fine.
       } else if (commandsProcessed === 0 && itemsAddedFromCommands === 0 ) {
          toast({
           title: t('noCommandsOrItemsFoundTitle'),
           description: t('noCommandsOrItemsFoundDescription'),
         });
       }
-
 
     } catch (error: any) {
       console.error('Error processing voice input:', error);
@@ -159,6 +158,7 @@ export default function VoiceChecklistPage() {
   };
 
   const addMultipleItems = (texts: string[], showToast: boolean = true) => {
+    if (editingItemId) setEditingItemId(null); 
     const newItems: ChecklistItemType[] = texts.map(text => ({
       id: crypto.randomUUID(),
       text,
@@ -183,6 +183,7 @@ export default function VoiceChecklistPage() {
   };
 
   const handleToggleItem = (id: string, showToast: boolean = true) => {
+    if (editingItemId) setEditingItemId(null); 
     let itemName = "";
     setItems(prevItems =>
       prevItems.map(item => {
@@ -202,6 +203,7 @@ export default function VoiceChecklistPage() {
   };
 
   const handleDeleteItem = (id: string, showToast: boolean = true) => {
+    if (editingItemId === id) setEditingItemId(null);
     setItems(prevItems => prevItems.filter(item => item.id !== id));
     if (showToast) {
       toast({
@@ -209,6 +211,34 @@ export default function VoiceChecklistPage() {
         description: t('itemDeletedToastDescription'),
       });
     }
+  };
+
+  const handleStartEdit = (item: ChecklistItemType) => {
+    setEditingItemId(item.id);
+  };
+
+  const handleSaveEditText = (id: string, newText: string) => {
+    if (!newText.trim()) {
+      toast({
+        title: t('itemTextCannotBeEmptyTitle'),
+        description: t('itemTextCannotBeEmptyDescription'),
+        variant: 'destructive',
+      });
+      setEditingItemId(null); // Exit edit mode if text is empty
+      return;
+    }
+    setItems(prevItems =>
+      prevItems.map(item => (item.id === id ? { ...item, text: newText.trim() } : item))
+    );
+    setEditingItemId(null);
+    toast({
+      title: t('itemUpdatedToastTitle'),
+      description: t('itemUpdatedToastDescription', { itemText: newText.substring(0, 30) }),
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingItemId(null);
   };
   
   if (!isMounted || !t('voiceChecklistTitle')) { 
@@ -219,7 +249,6 @@ export default function VoiceChecklistPage() {
       </div>
     );
   }
-
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
@@ -254,7 +283,7 @@ export default function VoiceChecklistPage() {
             <Separator className="flex-grow" />
           </div>
 
-          <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading} />
+          <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading || !!editingItemId} />
           
           <Separator />
 
@@ -262,6 +291,10 @@ export default function VoiceChecklistPage() {
             items={items}
             onToggleItem={handleToggleItem}
             onDeleteItem={handleDeleteItem}
+            onStartEdit={handleStartEdit}
+            onSaveEditText={handleSaveEditText}
+            onCancelEdit={handleCancelEdit}
+            editingItemId={editingItemId}
             disabled={isLoading}
           />
         </CardContent>

@@ -53,5 +53,13 @@
   "commandToggleExample2": "Или просто назовите существующий элемент: «Молоко»",
   "commandCategoryDelete": "Удаление элементов:",
   "commandDeleteExample1": "Скажите: «Удалить яйца», «Убрать хлеб»",
-  "closeButton": "Закрыть"
+  "closeButton": "Закрыть",
+  "editButtonAriaLabel": "Редактировать задачу {taskText}",
+  "saveButtonAriaLabel": "Сохранить изменения",
+  "cancelButtonAriaLabel": "Отменить редактирование",
+  "editItemInputAriaLabel": "Редактировать текст для задачи {taskText}",
+  "itemUpdatedToastTitle": "Задача обновлена",
+  "itemUpdatedToastDescription": "Задача «{itemText}» была обновлена.",
+  "itemTextCannotBeEmptyTitle": "Нельзя сохранить пустую задачу",
+  "itemTextCannotBeEmptyDescription": "Текст задачи не может быть пустым. Редактирование отменено."
 }

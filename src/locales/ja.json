@@ -53,5 +53,13 @@
   "commandToggleExample2": "または既存のアイテム名を言う: 「牛乳」",
   "commandCategoryDelete": "アイテムの削除:",
   "commandDeleteExample1": "例：「卵を削除」、「パンを削除」",
-  "closeButton": "閉じる"
+  "closeButton": "閉じる",
+  "editButtonAriaLabel": "タスク{taskText}を編集",
+  "saveButtonAriaLabel": "変更を保存",
+  "cancelButtonAriaLabel": "編集をキャンセル",
+  "editItemInputAriaLabel": "アイテム{taskText}のテキストを編集",
+  "itemUpdatedToastTitle": "アイテムが更新されました",
+  "itemUpdatedToastDescription": "アイテム「{itemText}」が更新されました。",
+  "itemTextCannotBeEmptyTitle": "空のアイテムは保存できません",
+  "itemTextCannotBeEmptyDescription": "アイテムのテキストは空にできません。編集はキャンセルされました。"
 }

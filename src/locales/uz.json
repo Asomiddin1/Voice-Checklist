@@ -53,5 +53,13 @@
   "commandToggleExample2": "Yoki mavjud element nomini ayting: \"Sut\"",
   "commandCategoryDelete": "Elementlarni O'chirish:",
   "commandDeleteExample1": "Ayting: \"Tuxumni o'chirish\", \"Nonni olib tashlash\"",
-  "closeButton": "Yopish"
+  "closeButton": "Yopish",
+  "editButtonAriaLabel": "{taskText} vazifasini tahrirlash",
+  "saveButtonAriaLabel": "O'zgarishlarni saqlash",
+  "cancelButtonAriaLabel": "Tahrirlashni bekor qilish",
+  "editItemInputAriaLabel": "{taskText} elementining matnini tahrirlash",
+  "itemUpdatedToastTitle": "Element Yangilandi",
+  "itemUpdatedToastDescription": "\"{itemText}\" elementi yangilandi.",
+  "itemTextCannotBeEmptyTitle": "Bo'sh Elementni Saqlab Bo'lmaydi",
+  "itemTextCannotBeEmptyDescription": "Element matni bo'sh bo'lishi mumkin emas. Tahrirlash bekor qilindi."
 }
