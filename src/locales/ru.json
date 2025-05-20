@@ -75,8 +75,8 @@
   "folderAriaLabel": "Открыть папку",
   "settingsAriaLabel": "Открыть настройки",
   "notesBottomNav": "Заметки",
-  "tasksBottomNav": "Задачи"
+  "tasksBottomNav": "Задачи",
+  "andMoreItems": "и еще {count}..."
 }
-
 
     

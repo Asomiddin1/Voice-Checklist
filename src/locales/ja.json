@@ -75,8 +75,8 @@
   "folderAriaLabel": "フォルダを開く",
   "settingsAriaLabel": "設定を開く",
   "notesBottomNav": "ノート",
-  "tasksBottomNav": "タスク"
+  "tasksBottomNav": "タスク",
+  "andMoreItems": "あと{count}件..."
 }
-
 
     

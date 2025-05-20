@@ -13,7 +13,7 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave, Folder as IconFolder, Settings as IconSettings, List as IconList, CheckSquare as IconCheckSquare } from 'lucide-react';
+import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave, Folder as IconFolder, Settings as IconSettings, List as IconList, CheckSquare as IconCheckSquare, Pencil as IconPencil } from 'lucide-react';
 import VoiceCommandsModal from '@/components/voice-commands-modal';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -284,12 +284,24 @@ export default function VoiceChecklistPage() {
     setEditingItemId(null);
   };
   
-  const handleOpenModal = () => {
+  const handleOpenModalAndLoadItems = () => {
     const storedItems = localStorage.getItem('checklistItems');
     if (storedItems) {
-      const parsedItems = JSON.parse(storedItems);
-      setItems(parsedItems); 
+      try {
+        const parsedItems = JSON.parse(storedItems);
+        setItems(parsedItems); 
+      } catch (error) {
+        console.error("Failed to parse items from localStorage", error);
+        setItems([]); // Reset to empty if parsing fails
+      }
+    } else {
+      setItems([]); // Reset to empty if no items in storage
     }
+    setIsModalOpen(true);
+  };
+  
+  const handleEditItemFromMainPage = (itemToEdit: ChecklistItemType) => {
+    handleStartEdit(itemToEdit);
     setIsModalOpen(true);
   };
 
@@ -321,18 +333,41 @@ export default function VoiceChecklistPage() {
       {/* Main Content Area */}
       <main className="flex-grow p-4 space-y-4">
         {showListOnMainPage && items.length > 0 && (
-          <Card className="w-full max-w-md shadow-lg">
+          <Card 
+            className="w-full max-w-md shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+            onClick={() => {
+              if (editingItemId) setEditingItemId(null); // Clear any pending edit state
+              handleOpenModalAndLoadItems();
+            }}
+          >
             <CardHeader>
               <CardTitle className="text-xl font-semibold">{t('savedChecklistTitle')}</CardTitle>
             </CardHeader>
             <CardContent className="p-4">
               <ul className="space-y-1">
                 {items.slice(0, 4).map(item => (
-                  <li key={item.id} className={`text-sm ${item.completed ? 'line-through text-muted-foreground' : ''}`}>
-                    {item.text}
+                  <li 
+                    key={item.id} 
+                    className="group flex items-center justify-between py-1 hover:bg-muted/50 rounded-md px-2 -mx-2"
+                  >
+                    <span className={`text-sm ${item.completed ? 'line-through text-muted-foreground' : ''} break-all`}>
+                      {item.text}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card's onClick
+                        handleEditItemFromMainPage(item);
+                      }}
+                      aria-label={t('editButtonAriaLabel', { taskText: item.text })}
+                    >
+                      <IconPencil className="h-4 w-4" />
+                    </Button>
                   </li>
                 ))}
-                {items.length > 4 && <li className="text-sm text-muted-foreground">...</li>}
+                {items.length > 4 && <li className="text-sm text-muted-foreground pt-1">... {t('andMoreItems', {count: items.length - 4})}</li>}
               </ul>
             </CardContent>
           </Card>
@@ -341,7 +376,15 @@ export default function VoiceChecklistPage() {
 
       {/* FAB to open modal */}
       <TooltipProvider>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog open={isModalOpen} onOpenChange={(open) => {
+          setIsModalOpen(open);
+          if (!open) { // If modal is closing
+            setEditingItemId(null); // Clear any edit state
+            // Optionally, refresh main page list from localStorage again if needed
+            const storedItems = localStorage.getItem('checklistItems');
+            if (storedItems) setItems(JSON.parse(storedItems));
+          }
+        }}>
           <Tooltip>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
@@ -350,7 +393,7 @@ export default function VoiceChecklistPage() {
                   size="lg"
                   className="fixed bottom-20 right-6 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50 bg-amber-500 hover:bg-amber-600 text-white"
                   aria-label={t('openChecklistAppButton')}
-                  onClick={handleOpenModal} 
+                  onClick={handleOpenModalAndLoadItems} 
                 >
                   <IconPlus className="h-8 w-8" />
                 </Button>
@@ -363,8 +406,8 @@ export default function VoiceChecklistPage() {
           
           <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
             <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
-              <div className="invisible">
-                <LanguageSwitcher /> {/* Kept for spacing, actual one below */}
+              <div className="invisible"> {/* Placeholder for spacing to center title */}
+                <LanguageSwitcher /> 
               </div>
               <h2 className="text-lg font-semibold text-foreground">{t('voiceChecklistTitle')}</h2>
               <LanguageSwitcher />
