@@ -25,6 +25,7 @@
   "itemAddedToastDescription": "\"{itemText}\" added to your checklist.",
   "itemDeletedToastTitle": "Item Deleted",
   "itemDeletedToastDescription": "The item has been removed from your checklist.",
+  "itemDeletedToastDescriptionWithText": "Item \"{itemText}\" has been removed.",
   "deleteTaskAriaLabel": "Delete task {taskText}",
   "switchToEnglish": "English",
   "switchToRussian": "Русский",
@@ -77,11 +78,12 @@
   "notesBottomNav": "Notes",
   "tasksBottomNav": "Tasks",
   "andMoreItems": "and {count} more...",
-  "nameYourListModalTitle": "Name Your New List",
-  "nameYourListModalDescription": "Give your new checklist a name to easily identify it later.",
+  "nameYourListModalTitle": "Name Your List",
+  "nameYourNewListModalDescription": "Give your new checklist a name to easily identify it later.",
+  "renameListModalDescription": "Enter a new name for your list or confirm the current one.",
   "listNameLabel": "List Name",
   "listNamePlaceholder": "e.g., Groceries, Work Tasks",
-  "createAndOpenListButton": "Create & Open List",
+  "createAndOpenListButton": "Save Name & Open List",
   "createNewListButton": "Create New List",
   "cancelButton": "Cancel",
   "errorText": "Error",
@@ -89,7 +91,15 @@
   "activeListNameMissingError": "No active list name found. Cannot save.",
   "editingListTitle": "Editing: {listName}",
   "saveChecklistButtonAria": "Save checklist {listName}",
-  "cannotEditNoActiveListError": "Cannot start editing. No active list is selected."
+  "cannotEditNoActiveListError": "Cannot start editing. No active list is selected.",
+  "nameNewListBeforeEditError": "Please name this new list before editing items.",
+  "listMustBeNamedToSaveError": "This list must be named before it can be saved.",
+  "openingExistingListTitle": "Opening Existing List",
+  "openingExistingListDescription": "Opening list \"{listName}\".",
+  "newUnsavedListTitle": "New List",
+  "emptyListPreviewMessage": "This list is empty. Click to add items."
 }
+
+    
 
     

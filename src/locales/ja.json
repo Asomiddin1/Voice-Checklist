@@ -25,6 +25,7 @@
   "itemAddedToastDescription": "「{itemText}」がチェックリストに追加されました。",
   "itemDeletedToastTitle": "アイテムが削除されました",
   "itemDeletedToastDescription": "アイテムはチェックリストから削除されました。",
+  "itemDeletedToastDescriptionWithText": "アイテム「{itemText}」は削除されました。",
   "deleteTaskAriaLabel": "タスク{taskText}を削除",
   "switchToEnglish": "English",
   "switchToRussian": "Русский",
@@ -77,11 +78,12 @@
   "notesBottomNav": "ノート",
   "tasksBottomNav": "タスク",
   "andMoreItems": "あと{count}件...",
-  "nameYourListModalTitle": "新しいリストに名前を付ける",
-  "nameYourListModalDescription": "後で簡単に識別できるように、新しいチェックリストに名前を付けてください。",
+  "nameYourListModalTitle": "リストに名前を付ける",
+  "nameYourNewListModalDescription": "後で簡単に識別できるように、新しいチェックリストに名前を付けてください。",
+  "renameListModalDescription": "リストに新しい名前を入力するか、現在の名前を確認してください。",
   "listNameLabel": "リスト名",
   "listNamePlaceholder": "例：買い物リスト、作業タスク",
-  "createAndOpenListButton": "リストを作成して開く",
+  "createAndOpenListButton": "名前を保存してリストを開く",
   "createNewListButton": "新しいリストを作成",
   "cancelButton": "キャンセル",
   "errorText": "エラー",
@@ -89,7 +91,15 @@
   "activeListNameMissingError": "アクティブなリスト名が見つかりません。保存できません。",
   "editingListTitle": "編集中: {listName}",
   "saveChecklistButtonAria": "チェックリスト{listName}を保存",
-  "cannotEditNoActiveListError": "編集を開始できません。アクティブなリストが選択されていません。"
+  "cannotEditNoActiveListError": "編集を開始できません。アクティブなリストが選択されていません。",
+  "nameNewListBeforeEditError": "アイテムを編集する前に、この新しいリストに名前を付けてください。",
+  "listMustBeNamedToSaveError": "保存する前に、このリストに名前を付ける必要があります。",
+  "openingExistingListTitle": "既存のリストを開いています",
+  "openingExistingListDescription": "リスト「{listName}」を開いています。",
+  "newUnsavedListTitle": "新しいリスト",
+  "emptyListPreviewMessage": "このリストは空です。クリックしてアイテムを追加してください。"
 }
+
+    
 
     

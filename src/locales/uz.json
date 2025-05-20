@@ -25,6 +25,7 @@
   "itemAddedToastDescription": "\"{itemText}\" nazorat ro'yxatingizga qo'shildi.",
   "itemDeletedToastTitle": "Element O'chirildi",
   "itemDeletedToastDescription": "Element nazorat ro'yxatingizdan o'chirildi.",
+  "itemDeletedToastDescriptionWithText": "\"{itemText}\" elementi o'chirildi.",
   "deleteTaskAriaLabel": "{taskText} vazifasini o'chirish",
   "switchToEnglish": "English",
   "switchToRussian": "Русский",
@@ -77,11 +78,12 @@
   "notesBottomNav": "Qaydlar",
   "tasksBottomNav": "Vazifalar",
   "andMoreItems": "va yana {count} ta...",
-  "nameYourListModalTitle": "Yangi Roʻyxatingizga Nom Bering",
-  "nameYourListModalDescription": "Keyinchalik oson topish uchun yangi nazorat roʻyxatingizga nom bering.",
+  "nameYourListModalTitle": "Roʻyxatingizga Nom Bering",
+  "nameYourNewListModalDescription": "Keyinchalik oson topish uchun yangi nazorat roʻyxatingizga nom bering.",
+  "renameListModalDescription": "Roʻyxatingizga yangi nom kiriting yoki joriy nomni tasdiqlang.",
   "listNameLabel": "Roʻyxat Nomi",
   "listNamePlaceholder": "Masalan, Oziq-ovqatlar, Ish Vazifalari",
-  "createAndOpenListButton": "Roʻyxat Yaratish va Ochish",
+  "createAndOpenListButton": "Nomni Saqlash va Roʻyxatni Ochish",
   "createNewListButton": "Yangi Roʻyxat Yaratish",
   "cancelButton": "Bekor qilish",
   "errorText": "Xatolik",
@@ -89,6 +91,15 @@
   "activeListNameMissingError": "Faol roʻyxat nomi topilmadi. Saqlab boʻlmadi.",
   "editingListTitle": "Tahrirlash: {listName}",
   "saveChecklistButtonAria": "{listName} roʻyxatini saqlash",
-  "cannotEditNoActiveListError": "Tahrirlashni boshlab boʻlmadi. Faol roʻyxat tanlanmagan."
+  "cannotEditNoActiveListError": "Tahrirlashni boshlab boʻlmadi. Faol roʻyxat tanlanmagan.",
+  "nameNewListBeforeEditError": "Elementlarni tahrirlashdan oldin ushbu yangi roʻyxatga nom bering.",
+  "listMustBeNamedToSaveError": "Saqlashdan oldin ushbu roʻyxatga nom berilishi kerak.",
+  "openingExistingListTitle": "Mavjud Roʻyxat Ochilmoqda",
+  "openingExistingListDescription": "\"{listName}\" roʻyxati ochilmoqda.",
+  "newUnsavedListTitle": "Yangi Roʻyxat",
+  "emptyListPreviewMessage": "Bu roʻyxat boʻsh. Element qoʻshish uchun bosing."
 }
+
+    
+
     

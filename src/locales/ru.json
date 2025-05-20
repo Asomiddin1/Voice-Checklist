@@ -25,6 +25,7 @@
   "itemAddedToastDescription": "«{itemText}» добавлена в ваш список.",
   "itemDeletedToastTitle": "Задача удалена",
   "itemDeletedToastDescription": "Задача была удалена из вашего списка.",
+  "itemDeletedToastDescriptionWithText": "Задача «{itemText}» была удалена.",
   "deleteTaskAriaLabel": "Удалить задачу {taskText}",
   "switchToEnglish": "English",
   "switchToRussian": "Русский",
@@ -77,11 +78,12 @@
   "notesBottomNav": "Заметки",
   "tasksBottomNav": "Задачи",
   "andMoreItems": "и еще {count}...",
-  "nameYourListModalTitle": "Назовите ваш новый список",
-  "nameYourListModalDescription": "Дайте вашему новому списку имя, чтобы легко его найти позже.",
+  "nameYourListModalTitle": "Назовите ваш список",
+  "nameYourNewListModalDescription": "Дайте вашему новому списку имя, чтобы легко его найти позже.",
+  "renameListModalDescription": "Введите новое имя для вашего списка или подтвердите текущее.",
   "listNameLabel": "Имя списка",
   "listNamePlaceholder": "например, Продукты, Рабочие задачи",
-  "createAndOpenListButton": "Создать и открыть список",
+  "createAndOpenListButton": "Сохранить имя и открыть список",
   "createNewListButton": "Создать новый список",
   "cancelButton": "Отмена",
   "errorText": "Ошибка",
@@ -89,7 +91,15 @@
   "activeListNameMissingError": "Активное имя списка не найдено. Невозможно сохранить.",
   "editingListTitle": "Редактирование: {listName}",
   "saveChecklistButtonAria": "Сохранить список {listName}",
-  "cannotEditNoActiveListError": "Невозможно начать редактирование. Активный список не выбран."
+  "cannotEditNoActiveListError": "Невозможно начать редактирование. Активный список не выбран.",
+  "nameNewListBeforeEditError": "Пожалуйста, назовите этот новый список перед редактированием элементов.",
+  "listMustBeNamedToSaveError": "Этот список должен быть назван перед сохранением.",
+  "openingExistingListTitle": "Открытие существующего списка",
+  "openingExistingListDescription": "Открытие списка «{listName}».",
+  "newUnsavedListTitle": "Новый список",
+  "emptyListPreviewMessage": "Этот список пуст. Нажмите, чтобы добавить элементы."
 }
+
+    
 
     
