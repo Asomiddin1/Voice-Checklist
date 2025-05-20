@@ -1,6 +1,7 @@
 
 {
   "voiceChecklistTitle": "Редактор голосового списка",
+  "voiceChecklistMainTitle": "Голосовой список",
   "voiceChecklistDescription": "Произнесите свои задачи или введите их. Организуйтесь без усилий!",
   "recordVoiceButton": "Записать голос",
   "stopRecordingButton": "Остановить запись",

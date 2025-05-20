@@ -1,6 +1,7 @@
 
 {
   "voiceChecklistTitle": "Voice Checklist Editor",
+  "voiceChecklistMainTitle": "Voice Checklist",
   "voiceChecklistDescription": "Speak your tasks, or type them in. Get organized effortlessly!",
   "recordVoiceButton": "Record Voice",
   "stopRecordingButton": "Stop Recording",

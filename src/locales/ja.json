@@ -1,6 +1,7 @@
 
 {
   "voiceChecklistTitle": "音声チェックリストエディタ",
+  "voiceChecklistMainTitle": "音声チェックリスト",
   "voiceChecklistDescription": "タスクを話すか入力してください。簡単に整理しましょう！",
   "recordVoiceButton": "音声を録音",
   "stopRecordingButton": "録音停止",

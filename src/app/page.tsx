@@ -418,7 +418,7 @@ export default function VoiceChecklistPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="p-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{t('notesTitle')}</h1>
+        <h1 className="text-3xl font-bold">{t('voiceChecklistMainTitle')}</h1>
         <div className="flex space-x-3">
           <Button variant="ghost" size="icon" aria-label={t('folderAriaLabel')}>
             <IconFolder className="h-6 w-6" />
