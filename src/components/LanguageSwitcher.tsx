@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Globe } from 'lucide-react';
+import { Settings as IconSettings } from 'lucide-react'; // Changed from Globe
 
 const LanguageSwitcher: React.FC = () => {
   const { locale, setLocale, t } = useLanguage();
@@ -26,9 +26,9 @@ const LanguageSwitcher: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">{t('changeLanguage')}</span>
+        <Button variant="ghost" size="icon" aria-label={t('settingsAriaLabel')}> {/* Changed variant and aria-label */}
+          <IconSettings className="h-6 w-6" /> {/* Changed icon and size */}
+          <span className="sr-only">{t('settingsAriaLabel')}</span> {/* Re-confirm SR text if needed */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

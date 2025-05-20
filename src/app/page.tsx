@@ -13,7 +13,7 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave, Folder as IconFolder, Settings as IconSettings, List as IconList, CheckSquare as IconCheckSquare, Pencil as IconPencil } from 'lucide-react';
+import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave, Folder as IconFolder, List as IconList, CheckSquare as IconCheckSquare, Pencil as IconPencil } from 'lucide-react';
 import VoiceCommandsModal from '@/components/voice-commands-modal';
 import { Dialog, DialogContent, DialogTrigger, DialogHeader as DialogPrimitiveHeader, DialogTitle as DialogPrimitiveTitle, DialogDescription as DialogPrimitiveDescription, DialogFooter as DialogPrimitiveFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -68,8 +68,6 @@ export default function VoiceChecklistPage() {
       let listToLoadName = storedLastActiveListName;
 
       if (!listToLoadName && Object.keys(allLists).length > 0) {
-        // Fallback to first list if no last active, but lists exist
-        // This part can be enhanced to show a list selection UI in the future
         listToLoadName = Object.keys(allLists)[0]; 
       }
       
@@ -79,11 +77,9 @@ export default function VoiceChecklistPage() {
         if (allLists[listToLoadName].length > 0) {
             setShowListOnMainPage(true);
         } else {
-            // If list exists but is empty, still show it on main page titled
             setShowListOnMainPage(true); 
         }
       } else {
-        // No active list found or no lists at all
         setShowListOnMainPage(false);
         setActiveListName(null);
         setItems([]);
@@ -97,13 +93,11 @@ export default function VoiceChecklistPage() {
   }, []);
 
   const handleSaveToLocalStorage = () => {
-    if (activeListName === null) { // trying to save an unnamed list
+    if (activeListName === null) { 
       toast({ title: t('errorText'), description: t('listMustBeNamedToSaveError'), variant: "destructive" });
-      // Optionally, trigger the name input modal here
-      // setIsNameInputModalOpen(true);
       return;
     }
-    if (!activeListName) { // general check, though above should catch null
+    if (!activeListName) { 
       toast({ title: t('errorText'), description: t('activeListNameMissingError'), variant: "destructive" });
       return;
     }
@@ -122,7 +116,7 @@ export default function VoiceChecklistPage() {
         description: t('saveChecklistSuccessDescription', { listName: activeListName }),
       });
       
-      setShowListOnMainPage(true); // Ensure list stays/appears on main page
+      setShowListOnMainPage(true); 
       setIsMainModalOpen(false); 
       setEditingItemId(null);
     } catch (error) {
@@ -136,19 +130,19 @@ export default function VoiceChecklistPage() {
   };
 
   const handleFABClick = () => {
-    setActiveListName(null); // Signal that this is a new, unnamed list
+    setActiveListName(null); 
     setItems([]);
-    setNewListNameInput(''); // Clear any previous input
-    setShowListOnMainPage(true); // Show the "white rectangle" (empty card)
+    setNewListNameInput(''); 
+    setShowListOnMainPage(true); 
     setIsMainModalOpen(false);
-    setIsNameInputModalOpen(false); // Don't open name input yet
+    setIsNameInputModalOpen(false); 
   };
   
   const handleMainPageListCardClick = () => {
-    if (activeListName === null) { // It's the "New List" card
-      setNewListNameInput(''); // Prepare for naming
+    if (activeListName === null) { 
+      setNewListNameInput(''); 
       setIsNameInputModalOpen(true);
-    } else { // It's an existing, named list card
+    } else { 
       openMainModalForCurrentList();
     }
   };
@@ -161,7 +155,6 @@ export default function VoiceChecklistPage() {
     }
     const newName = newListNameInput.trim();
     
-    // Check if list with this name already exists
     const storedAllLists = localStorage.getItem(LOCALSTORAGE_ALL_LISTS_KEY);
     let allLists: Record<string, ChecklistItemType[]> = {};
     if (storedAllLists) {
@@ -169,19 +162,17 @@ export default function VoiceChecklistPage() {
     }
 
     if (allLists[newName]) {
-        // If list exists, load its items instead of starting fresh
         setItems(allLists[newName]);
         toast({ title: t('openingExistingListTitle'), description: t('openingExistingListDescription', { listName: newName }) });
     } else {
-        // New list, start with empty items
         setItems([]);
     }
     
     setActiveListName(newName);
     setNewListNameInput('');
     setIsNameInputModalOpen(false);
-    setIsMainModalOpen(true); // Open the main editor
-    setShowListOnMainPage(true); // Ensure it's marked to be shown
+    setIsMainModalOpen(true); 
+    setShowListOnMainPage(true); 
   };
 
   const openMainModalForCurrentList = () => {
@@ -191,15 +182,10 @@ export default function VoiceChecklistPage() {
         if (storedAllLists) {
             allLists = JSON.parse(storedAllLists);
         }
-        // Ensure items are loaded for the active list, even if it was just set
         setItems(allLists[activeListName] || []);
     } else {
-        // This case should ideally be handled by prompting for a name first
-        // or creating a default named list. For now, if activeListName is null,
-        // this function shouldn't be called directly without naming first.
-        // Fallback to opening name input modal or handling error.
         console.warn("Attempted to open main modal without an active list name for an existing list.");
-        setIsNameInputModalOpen(true); // Prompt to name it
+        setIsNameInputModalOpen(true); 
         return;
     }
     setEditingItemId(null);
@@ -352,12 +338,9 @@ export default function VoiceChecklistPage() {
         const itemToDelete = prevItems.find(item => item.id === id);
         if (itemToDelete) itemText = itemToDelete.text;
         const newItems = prevItems.filter(item => item.id !== id);
-        // if (newItems.length === 0 && showListOnMainPage && activeListName !== null) { // Only hide if it was a named list that became empty
-        //     // setShowListOnMainPage(false); // Decided against this, an empty named list should still show its card
-        // }
         return newItems;
     });
-    if (showToast && itemText) { // Only show toast if item was found and text is available
+    if (showToast && itemText) { 
       toast({
         title: t('itemDeletedToastTitle'),
         description: t('itemDeletedToastDescriptionWithText', { itemText: itemText.substring(0, 30) }),
@@ -365,7 +348,7 @@ export default function VoiceChecklistPage() {
     } else if (showToast) {
        toast({
         title: t('itemDeletedToastTitle'),
-        description: t('itemDeletedToastDescription'), // Generic one if text not available
+        description: t('itemDeletedToastDescription'), 
       });
     }
   };
@@ -400,7 +383,6 @@ export default function VoiceChecklistPage() {
   
   const handleEditItemFromMainPage = (itemToEdit: ChecklistItemType) => {
     if (activeListName === null) {
-        // This is the "New List" card, try to name it first
         toast({ title: t('errorText'), description: t('nameNewListBeforeEditError'), variant: 'destructive'});
         setIsNameInputModalOpen(true);
         return;
@@ -412,7 +394,7 @@ export default function VoiceChecklistPage() {
             allLists = JSON.parse(storedAllLists);
         }
         if (allLists[activeListName]) {
-            setItems(allLists[activeListName]); // ensure current items for active list are loaded
+            setItems(allLists[activeListName]); 
         }
         
         handleStartEdit(itemToEdit);
@@ -441,9 +423,7 @@ export default function VoiceChecklistPage() {
           <Button variant="ghost" size="icon" aria-label={t('folderAriaLabel')}>
             <IconFolder className="h-6 w-6" />
           </Button>
-          <Button variant="ghost" size="icon" aria-label={t('settingsAriaLabel')}>
-            <IconSettings className="h-6 w-6" />
-          </Button>
+          <LanguageSwitcher />
         </div>
       </header>
 
@@ -541,7 +521,6 @@ export default function VoiceChecklistPage() {
           <DialogPrimitiveFooter>
             <Button type="button" variant="outline" onClick={() => {
                 setIsNameInputModalOpen(false);
-                // If canceling naming for a "new list" card, hide it from main page
                 if (activeListName === null && items.length === 0) {
                     setShowListOnMainPage(false);
                 }
@@ -560,44 +539,34 @@ export default function VoiceChecklistPage() {
           setIsMainModalOpen(open);
           if (!open) { 
             setEditingItemId(null);
-            // When main modal closes, ensure main page reflects the active list correctly
-            if (activeListName) { // if a list was active (named)
+            if (activeListName) { 
                 const storedAllLists = localStorage.getItem(LOCALSTORAGE_ALL_LISTS_KEY);
                 if (storedAllLists) {
                     const allListsData = JSON.parse(storedAllLists);
                     if (allListsData[activeListName]) {
-                        setItems(allListsData[activeListName]); // Re-sync items state from storage
-                        setShowListOnMainPage(true); // Ensure it's shown
+                        setItems(allListsData[activeListName]); 
+                        setShowListOnMainPage(true); 
                     } else {
-                       // List might have been deleted or was never saved
                        setShowListOnMainPage(false); 
                     }
                 } else {
-                     setShowListOnMainPage(false); // No lists in storage
+                     setShowListOnMainPage(false); 
                 }
-            } else { // No active list name (e.g., modal closed before naming a new list)
-                 // If it was a new list that wasn't named and saved, it shouldn't show on main page
-                 // unless we decide 'null' activeListName means 'show new list card'
-                 // For now, if activeListName is null and modal closed, hide the placeholder card
+            } else { 
                  if (items.length === 0) setShowListOnMainPage(false); 
             }
           }
         }}>
           <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
-            <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
-              <div className="invisible"> {/* Placeholder for spacing to center title */}
-                <LanguageSwitcher /> 
-              </div>
+            <div className="flex-shrink-0 p-4 flex justify-center items-center border-b bg-muted/30 relative">
               <h2 className="text-lg font-semibold text-foreground">
                 {activeListName ? t('editingListTitle', { listName: activeListName }) : t('voiceChecklistTitle')}
               </h2>
-              <LanguageSwitcher />
             </div>
 
             <div className="flex-grow overflow-y-auto">
               <Card className="w-full h-full shadow-none border-none rounded-none flex flex-col">
                  <CardHeader className="bg-primary text-primary-foreground text-center p-6 flex-shrink-0">
-                  {/* CardTitle removed as it's in modal header now */}
                   <CardDescription className="text-primary-foreground/80 text-sm">
                     {t('voiceChecklistDescription')}
                   </CardDescription>
@@ -641,7 +610,7 @@ export default function VoiceChecklistPage() {
                     onClick={handleSaveToLocalStorage}
                     aria-label={t('saveChecklistButtonAria', {listName: activeListName || ""})}
                     className="gap-2"
-                    disabled={!activeListName} // Disable if no active list name (e.g. new list not yet named)
+                    disabled={!activeListName} 
                   >
                     <IconSave className="h-5 w-5" />
                     {t('saveChecklistButton')}
@@ -669,6 +638,4 @@ export default function VoiceChecklistPage() {
     </div>
   );
 }
-    
-
     
