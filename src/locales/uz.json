@@ -65,5 +65,7 @@
   "openChecklistAppButton": "Ovozli Ro'yxatni Ochish",
   "saveChecklistButton": "Ro'yxatni Saqlash",
   "saveChecklistSuccessTitle": "Ro'yxat Saqlandi",
-  "saveChecklistSuccessDescription": "Sizning nazorat ro'yxatingiz mahalliy xotiraga saqlandi."
+  "saveChecklistSuccessDescription": "Sizning nazorat ro'yxatingiz mahalliy xotiraga saqlandi.",
+  "saveChecklistButtonTooltip": "Joriy nazorat roʻyxatini saqlang",
+  "changeLanguage": "Tilni o'zgartirish"
 }

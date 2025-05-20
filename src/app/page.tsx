@@ -77,7 +77,7 @@ export default function VoiceChecklistPage() {
     } catch (error) {
       console.error("Failed to save items to localStorage explicitly", error);
       toast({
-        title: t('errorProcessingVoiceTitle'), // Generic error title
+        title: t('errorProcessingVoiceTitle'), 
         description: t('unexpectedError'),
         variant: "destructive",
       });
@@ -185,7 +185,7 @@ export default function VoiceChecklistPage() {
       text,
       completed: false,
     }));
-    setItems(prevItems => [...newItems, ...prevItems]); // Add new items to the top
+    setItems(prevItems => [...newItems, ...prevItems]); 
     if (showToast && newItems.length === 1) {
        toast({
         title: t('itemAddedToastTitle'),
@@ -262,7 +262,7 @@ export default function VoiceChecklistPage() {
     setEditingItemId(null);
   };
 
-  if (!isMounted || !t('voiceChecklistTitle')) { // Check for a key translation to ensure context is ready
+  if (!isMounted || !t('voiceChecklistTitle')) { 
      return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
         <IconLoader className="h-16 w-16 animate-spin text-primary" />
@@ -273,8 +273,25 @@ export default function VoiceChecklistPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="fixed bottom-8 left-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50"
+              aria-label={t('saveChecklistButton')}
+              onClick={handleSaveToLocalStorage}
+            >
+              <IconSave className="h-8 w-8" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={10}>
+            <p>{t('saveChecklistButtonTooltip')}</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <Tooltip>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
@@ -292,70 +309,70 @@ export default function VoiceChecklistPage() {
               <p>{t('openChecklistAppButton')}</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
-        
-        <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
-          <div className="flex-shrink-0 p-4 flex justify-end items-center border-b bg-muted/30">
-            <LanguageSwitcher />
-          </div>
+          
+          <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
+            {/* Navbar area */}
+            <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
+              <div className="invisible"> {/* Placeholder for left side if needed */}
+                <LanguageSwitcher />
+              </div>
+              <h2 className="text-lg font-semibold text-foreground">{t('voiceChecklistTitle')}</h2>
+              <LanguageSwitcher />
+            </div>
 
-          <div className="flex-grow overflow-y-auto">
-            <Card className="w-full h-full shadow-none border-none rounded-none flex flex-col">
-              <CardHeader className="bg-primary text-primary-foreground text-center p-6 flex-shrink-0">
-                <CardTitle className="text-3xl font-bold tracking-tight">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-2 mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
-                  {t('voiceChecklistTitle')}
-                </CardTitle>
-                <CardDescription className="text-primary-foreground/80 text-sm">
-                  {t('voiceChecklistDescription')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6 space-y-6 flex-grow">
-                <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20 space-y-3">
-                   <VoiceRecorder
-                      onRecordingComplete={handleRecordingComplete}
-                      onRecordingError={handleRecordingError}
-                      isProcessing={isLoading}
-                   />
-                   <div className="flex justify-center">
-                      <VoiceCommandsModal />
-                   </div>
-                </div>
+            <div className="flex-grow overflow-y-auto">
+              <Card className="w-full h-full shadow-none border-none rounded-none flex flex-col">
+                <CardHeader className="bg-primary text-primary-foreground text-center p-6 flex-shrink-0">
+                  {/* Title moved to modal navbar, description can remain or be removed */}
+                  <CardDescription className="text-primary-foreground/80 text-sm">
+                    {t('voiceChecklistDescription')}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6 space-y-6 flex-grow">
+                  <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20 space-y-3">
+                     <VoiceRecorder
+                        onRecordingComplete={handleRecordingComplete}
+                        onRecordingError={handleRecordingError}
+                        isProcessing={isLoading}
+                     />
+                     <div className="flex justify-center">
+                        <VoiceCommandsModal />
+                     </div>
+                  </div>
 
-                <div className="flex items-center space-x-2">
-                  <Separator className="flex-grow" />
-                  <span className="text-xs text-muted-foreground font-medium">{t('orSeparator')}</span>
-                  <Separator className="flex-grow" />
-                </div>
+                  <div className="flex items-center space-x-2">
+                    <Separator className="flex-grow" />
+                    <span className="text-xs text-muted-foreground font-medium">{t('orSeparator')}</span>
+                    <Separator className="flex-grow" />
+                  </div>
 
-                <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading || !!editingItemId} />
+                  <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading || !!editingItemId} />
 
-                <Separator />
+                  <Separator />
 
-                <ChecklistDisplay
-                  items={items}
-                  onToggleItem={handleToggleItem}
-                  onDeleteItem={handleDeleteItem}
-                  onStartEdit={handleStartEdit}
-                  onSaveEditText={handleSaveEditText}
-                  onCancelEdit={handleCancelEdit}
-                  editingItemId={editingItemId}
-                  disabled={isLoading}
-                />
-              </CardContent>
-              <CardFooter className="flex-shrink-0 p-4 border-t flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
-                <Button onClick={handleSaveToLocalStorage} variant="outline" size="sm" className="w-full sm:w-auto">
-                  <IconSave className="mr-2 h-4 w-4" />
-                  {t('saveChecklistButton')}
-                </Button>
-                <p className="text-center text-xs text-muted-foreground">
-                  {t('footerText', { year: new Date().getFullYear() })}
-                </p>
-              </CardFooter>
-            </Card>
-          </div>
-        </DialogContent>
-      </Dialog>
+                  <ChecklistDisplay
+                    items={items}
+                    onToggleItem={handleToggleItem}
+                    onDeleteItem={handleDeleteItem}
+                    onStartEdit={handleStartEdit}
+                    onSaveEditText={handleSaveEditText}
+                    onCancelEdit={handleCancelEdit}
+                    editingItemId={editingItemId}
+                    disabled={isLoading}
+                  />
+                </CardContent>
+                <CardFooter className="flex-shrink-0 p-4 border-t flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0">
+                  {/* Save button moved to main page */}
+                  <p className="text-center text-xs text-muted-foreground">
+                    {t('footerText', { year: new Date().getFullYear() })}
+                  </p>
+                </CardFooter>
+              </Card>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </TooltipProvider>
     </div>
   );
 }
+

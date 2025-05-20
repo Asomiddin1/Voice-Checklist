@@ -65,5 +65,7 @@
   "openChecklistAppButton": "Open Voice Checklist",
   "saveChecklistButton": "Save Checklist",
   "saveChecklistSuccessTitle": "Checklist Saved",
-  "saveChecklistSuccessDescription": "Your checklist has been saved to local storage."
+  "saveChecklistSuccessDescription": "Your checklist has been saved to local storage.",
+  "saveChecklistButtonTooltip": "Save your current checklist",
+  "changeLanguage": "Change language"
 }

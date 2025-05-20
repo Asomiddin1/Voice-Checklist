@@ -65,5 +65,7 @@
   "openChecklistAppButton": "Открыть Голосовой Список",
   "saveChecklistButton": "Сохранить список",
   "saveChecklistSuccessTitle": "Список сохранен",
-  "saveChecklistSuccessDescription": "Ваш список дел сохранен в локальном хранилище."
+  "saveChecklistSuccessDescription": "Ваш список дел сохранен в локальном хранилище.",
+  "saveChecklistButtonTooltip": "Сохранить текущий список дел",
+  "changeLanguage": "Изменить язык"
 }

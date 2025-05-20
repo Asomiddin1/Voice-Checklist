@@ -65,5 +65,7 @@
   "openChecklistAppButton": "音声チェックリストを開く",
   "saveChecklistButton": "チェックリストを保存",
   "saveChecklistSuccessTitle": "チェックリストが保存されました",
-  "saveChecklistSuccessDescription": "チェックリストがローカルストレージに保存されました。"
+  "saveChecklistSuccessDescription": "チェックリストがローカルストレージに保存されました。",
+  "saveChecklistButtonTooltip": "現在のチェックリストを保存します",
+  "changeLanguage": "言語を変更"
 }
