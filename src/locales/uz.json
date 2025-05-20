@@ -65,7 +65,7 @@
   "openChecklistAppButton": "Ovozli Ro'yxat Muharririni Ochish",
   "saveChecklistButton": "Ro'yxatni Saqlash va Yopish",
   "saveChecklistSuccessTitle": "Ro'yxat Saqlandi",
-  "saveChecklistSuccessDescription": "Sizning nazorat ro'yxatingiz mahalliy xotiraga saqlandi.",
+  "saveChecklistSuccessDescription": "\"{listName}\" nomli ro'yxat saqlandi.",
   "saveChecklistButtonTooltip": "Joriy nazorat roʻyxatini saqlang",
   "changeLanguage": "Tilni o'zgartirish",
   "savedChecklistTitle": "Sizning Saqlangan Ro'yxatingiz",
@@ -76,7 +76,19 @@
   "settingsAriaLabel": "Sozlamalarni ochish",
   "notesBottomNav": "Qaydlar",
   "tasksBottomNav": "Vazifalar",
-  "andMoreItems": "va yana {count} ta..."
+  "andMoreItems": "va yana {count} ta...",
+  "nameYourListModalTitle": "Yangi Roʻyxatingizga Nom Bering",
+  "nameYourListModalDescription": "Keyinchalik oson topish uchun yangi nazorat roʻyxatingizga nom bering.",
+  "listNameLabel": "Roʻyxat Nomi",
+  "listNamePlaceholder": "Masalan, Oziq-ovqatlar, Ish Vazifalari",
+  "createAndOpenListButton": "Roʻyxat Yaratish va Ochish",
+  "createNewListButton": "Yangi Roʻyxat Yaratish",
+  "cancelButton": "Bekor qilish",
+  "errorText": "Xatolik",
+  "listNameCannotBeEmptyError": "Roʻyxat nomi boʻsh boʻlishi mumkin emas. Iltimos, nom kiriting.",
+  "activeListNameMissingError": "Faol roʻyxat nomi topilmadi. Saqlab boʻlmadi.",
+  "editingListTitle": "Tahrirlash: {listName}",
+  "saveChecklistButtonAria": "{listName} roʻyxatini saqlash",
+  "cannotEditNoActiveListError": "Tahrirlashni boshlab boʻlmadi. Faol roʻyxat tanlanmagan."
 }
-
     

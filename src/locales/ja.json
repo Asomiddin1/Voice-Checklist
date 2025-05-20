@@ -65,7 +65,7 @@
   "openChecklistAppButton": "音声チェックリストエディタを開く",
   "saveChecklistButton": "チェックリストを保存して閉じる",
   "saveChecklistSuccessTitle": "チェックリストが保存されました",
-  "saveChecklistSuccessDescription": "チェックリストがローカルストレージに保存されました。",
+  "saveChecklistSuccessDescription": "チェックリスト「{listName}」が保存されました。",
   "saveChecklistButtonTooltip": "現在のチェックリストを保存します",
   "changeLanguage": "言語を変更",
   "savedChecklistTitle": "保存されたチェックリスト",
@@ -76,7 +76,20 @@
   "settingsAriaLabel": "設定を開く",
   "notesBottomNav": "ノート",
   "tasksBottomNav": "タスク",
-  "andMoreItems": "あと{count}件..."
+  "andMoreItems": "あと{count}件...",
+  "nameYourListModalTitle": "新しいリストに名前を付ける",
+  "nameYourListModalDescription": "後で簡単に識別できるように、新しいチェックリストに名前を付けてください。",
+  "listNameLabel": "リスト名",
+  "listNamePlaceholder": "例：買い物リスト、作業タスク",
+  "createAndOpenListButton": "リストを作成して開く",
+  "createNewListButton": "新しいリストを作成",
+  "cancelButton": "キャンセル",
+  "errorText": "エラー",
+  "listNameCannotBeEmptyError": "リスト名は空にできません。名前を入力してください。",
+  "activeListNameMissingError": "アクティブなリスト名が見つかりません。保存できません。",
+  "editingListTitle": "編集中: {listName}",
+  "saveChecklistButtonAria": "チェックリスト{listName}を保存",
+  "cannotEditNoActiveListError": "編集を開始できません。アクティブなリストが選択されていません。"
 }
 
     

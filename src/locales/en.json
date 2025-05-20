@@ -65,7 +65,7 @@
   "openChecklistAppButton": "Open Voice Checklist Editor",
   "saveChecklistButton": "Save & Close Checklist",
   "saveChecklistSuccessTitle": "Checklist Saved",
-  "saveChecklistSuccessDescription": "Your checklist has been saved to local storage.",
+  "saveChecklistSuccessDescription": "Checklist \"{listName}\" has been saved.",
   "saveChecklistButtonTooltip": "Save your current checklist",
   "changeLanguage": "Change language",
   "savedChecklistTitle": "Your Saved Checklist",
@@ -76,7 +76,20 @@
   "settingsAriaLabel": "Open settings",
   "notesBottomNav": "Notes",
   "tasksBottomNav": "Tasks",
-  "andMoreItems": "and {count} more..."
+  "andMoreItems": "and {count} more...",
+  "nameYourListModalTitle": "Name Your New List",
+  "nameYourListModalDescription": "Give your new checklist a name to easily identify it later.",
+  "listNameLabel": "List Name",
+  "listNamePlaceholder": "e.g., Groceries, Work Tasks",
+  "createAndOpenListButton": "Create & Open List",
+  "createNewListButton": "Create New List",
+  "cancelButton": "Cancel",
+  "errorText": "Error",
+  "listNameCannotBeEmptyError": "List name cannot be empty. Please enter a name.",
+  "activeListNameMissingError": "No active list name found. Cannot save.",
+  "editingListTitle": "Editing: {listName}",
+  "saveChecklistButtonAria": "Save checklist {listName}",
+  "cannotEditNoActiveListError": "Cannot start editing. No active list is selected."
 }
 
     

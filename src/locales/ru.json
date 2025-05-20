@@ -65,7 +65,7 @@
   "openChecklistAppButton": "Открыть редактор списка",
   "saveChecklistButton": "Сохранить и закрыть список",
   "saveChecklistSuccessTitle": "Список сохранен",
-  "saveChecklistSuccessDescription": "Ваш список дел сохранен в локальном хранилище.",
+  "saveChecklistSuccessDescription": "Список «{listName}» сохранен.",
   "saveChecklistButtonTooltip": "Сохранить текущий список дел",
   "changeLanguage": "Изменить язык",
   "savedChecklistTitle": "Ваш сохраненный список",
@@ -76,7 +76,20 @@
   "settingsAriaLabel": "Открыть настройки",
   "notesBottomNav": "Заметки",
   "tasksBottomNav": "Задачи",
-  "andMoreItems": "и еще {count}..."
+  "andMoreItems": "и еще {count}...",
+  "nameYourListModalTitle": "Назовите ваш новый список",
+  "nameYourListModalDescription": "Дайте вашему новому списку имя, чтобы легко его найти позже.",
+  "listNameLabel": "Имя списка",
+  "listNamePlaceholder": "например, Продукты, Рабочие задачи",
+  "createAndOpenListButton": "Создать и открыть список",
+  "createNewListButton": "Создать новый список",
+  "cancelButton": "Отмена",
+  "errorText": "Ошибка",
+  "listNameCannotBeEmptyError": "Имя списка не может быть пустым. Пожалуйста, введите имя.",
+  "activeListNameMissingError": "Активное имя списка не найдено. Невозможно сохранить.",
+  "editingListTitle": "Редактирование: {listName}",
+  "saveChecklistButtonAria": "Сохранить список {listName}",
+  "cannotEditNoActiveListError": "Невозможно начать редактирование. Активный список не выбран."
 }
 
     
