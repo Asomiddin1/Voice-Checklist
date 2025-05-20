@@ -40,21 +40,31 @@ export default function VoiceChecklistPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
-  const { t, locale } = useLanguage();
+  const { t } = useLanguage();
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showListOnMainPage, setShowListOnMainPage] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     try {
       const storedItems = localStorage.getItem('checklistItems');
       if (storedItems) {
-        setItems(JSON.parse(storedItems));
+        const parsedItems = JSON.parse(storedItems);
+        setItems(parsedItems);
+        if (parsedItems.length > 0) {
+            setShowListOnMainPage(true);
+        } else {
+            setShowListOnMainPage(false);
+        }
+      } else {
+        setShowListOnMainPage(false);
       }
     } catch (error) {
       console.error("Failed to load items from localStorage", error);
+      setShowListOnMainPage(false);
     }
-  }, []);
+  }, []); // Run once on mount
 
   useEffect(() => {
     if (isMounted) {
@@ -74,6 +84,12 @@ export default function VoiceChecklistPage() {
         title: t('saveChecklistSuccessTitle'),
         description: t('saveChecklistSuccessDescription'),
       });
+      if (items.length > 0) {
+        setShowListOnMainPage(true);
+      } else {
+        setShowListOnMainPage(false); // If saved list is empty, don't show it on main.
+      }
+      setIsModalOpen(false); // Close the modal
     } catch (error) {
       console.error("Failed to save items to localStorage explicitly", error);
       toast({
@@ -225,7 +241,13 @@ export default function VoiceChecklistPage() {
 
   const handleDeleteItem = (id: string, showToast: boolean = true) => {
     if (editingItemId === id) setEditingItemId(null);
-    setItems(prevItems => prevItems.filter(item => item.id !== id));
+    setItems(prevItems => {
+        const newItems = prevItems.filter(item => item.id !== id);
+        if (newItems.length === 0 && showListOnMainPage) { // If list displayed on main page becomes empty
+            setShowListOnMainPage(false);
+        }
+        return newItems;
+    });
     if (showToast) {
       toast({
         title: t('itemDeletedToastTitle'),
@@ -261,6 +283,17 @@ export default function VoiceChecklistPage() {
   const handleCancelEdit = () => {
     setEditingItemId(null);
   };
+  
+  const handleOpenModal = () => {
+    // If items are loaded, ensure they are current when modal opens
+    const storedItems = localStorage.getItem('checklistItems');
+    if (storedItems) {
+      const parsedItems = JSON.parse(storedItems);
+      setItems(parsedItems); // Refresh items from storage
+    }
+    setIsModalOpen(true);
+  };
+
 
   if (!isMounted || !t('voiceChecklistTitle')) { 
      return (
@@ -272,19 +305,19 @@ export default function VoiceChecklistPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex flex-col items-center justify-center p-4">
       <TooltipProvider>
-        {/* Save button FAB removed from here */}
-
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <Tooltip>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
+                 {/* We now call handleOpenModal directly */}
                 <Button
                   variant="default"
                   size="lg"
-                  className="fixed bottom-8 right-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow"
+                  className="fixed bottom-8 right-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50"
                   aria-label={t('openChecklistAppButton')}
+                  onClick={handleOpenModal} 
                 >
                   <IconPlus className="h-8 w-8" />
                 </Button>
@@ -296,10 +329,9 @@ export default function VoiceChecklistPage() {
           </Tooltip>
           
           <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
-            {/* Navbar area */}
             <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
-              <div className="invisible"> {/* Placeholder for left side if needed, or can be removed if not centering title */}
-                <LanguageSwitcher /> {/* This could be a duplicate if switcher is also on right, adjust as needed */}
+              <div className="invisible">
+                <LanguageSwitcher />
               </div>
               <h2 className="text-lg font-semibold text-foreground">{t('voiceChecklistTitle')}</h2>
               <LanguageSwitcher />
@@ -364,8 +396,34 @@ export default function VoiceChecklistPage() {
           </DialogContent>
         </Dialog>
       </TooltipProvider>
+
+      {showListOnMainPage && items.length > 0 && (
+        <Card className="my-12 w-full max-w-2xl shadow-xl bg-card text-card-foreground">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl font-semibold">{t('savedChecklistTitle')}</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 md:p-6">
+            <ChecklistDisplay
+              items={items}
+              onToggleItem={handleToggleItem}
+              onDeleteItem={handleDeleteItem}
+              editingItemId={null}
+              onStartEdit={() => { 
+                toast({ 
+                  title: t('editInModalPromptTitle'), 
+                  description: t('editInModalPromptDescription'),
+                  duration: 5000 
+                });
+                handleOpenModal(); // Open the modal for editing
+              }}
+              onSaveEditText={() => {}} // No-op on main page
+              onCancelEdit={() => {}}   // No-op on main page
+              disabled={false} 
+            />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
-
     

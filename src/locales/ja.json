@@ -62,10 +62,14 @@
   "itemUpdatedToastDescription": "アイテム「{itemText}」が更新されました。",
   "itemTextCannotBeEmptyTitle": "空のアイテムは保存できません",
   "itemTextCannotBeEmptyDescription": "アイテムのテキストは空にできません。編集はキャンセルされました。",
-  "openChecklistAppButton": "音声チェックリストを開く",
-  "saveChecklistButton": "チェックリストを保存",
+  "openChecklistAppButton": "音声チェックリストエディタを開く",
+  "saveChecklistButton": "チェックリストを保存して閉じる",
   "saveChecklistSuccessTitle": "チェックリストが保存されました",
   "saveChecklistSuccessDescription": "チェックリストがローカルストレージに保存されました。",
   "saveChecklistButtonTooltip": "現在のチェックリストを保存します",
-  "changeLanguage": "言語を変更"
+  "changeLanguage": "言語を変更",
+  "savedChecklistTitle": "保存されたチェックリスト",
+  "editInModalPromptTitle": "アイテムを編集",
+  "editInModalPromptDescription": "アイテムのテキストを編集するには、「+」ボタンを使ってチェックリストエディタを開いてください。"
 }
+

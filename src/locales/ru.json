@@ -62,10 +62,14 @@
   "itemUpdatedToastDescription": "Задача «{itemText}» была обновлена.",
   "itemTextCannotBeEmptyTitle": "Нельзя сохранить пустую задачу",
   "itemTextCannotBeEmptyDescription": "Текст задачи не может быть пустым. Редактирование отменено.",
-  "openChecklistAppButton": "Открыть Голосовой Список",
-  "saveChecklistButton": "Сохранить список",
+  "openChecklistAppButton": "Открыть редактор списка",
+  "saveChecklistButton": "Сохранить и закрыть список",
   "saveChecklistSuccessTitle": "Список сохранен",
   "saveChecklistSuccessDescription": "Ваш список дел сохранен в локальном хранилище.",
   "saveChecklistButtonTooltip": "Сохранить текущий список дел",
-  "changeLanguage": "Изменить язык"
+  "changeLanguage": "Изменить язык",
+  "savedChecklistTitle": "Ваш сохраненный список",
+  "editInModalPromptTitle": "Редактировать элемент",
+  "editInModalPromptDescription": "Для редактирования текста элемента, пожалуйста, откройте редактор списка с помощью кнопки «+»."
 }
+

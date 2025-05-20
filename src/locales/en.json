@@ -62,10 +62,14 @@
   "itemUpdatedToastDescription": "Item \"{itemText}\" has been updated.",
   "itemTextCannotBeEmptyTitle": "Cannot Save Empty Item",
   "itemTextCannotBeEmptyDescription": "Item text cannot be empty. Edit cancelled.",
-  "openChecklistAppButton": "Open Voice Checklist",
-  "saveChecklistButton": "Save Checklist",
+  "openChecklistAppButton": "Open Voice Checklist Editor",
+  "saveChecklistButton": "Save & Close Checklist",
   "saveChecklistSuccessTitle": "Checklist Saved",
   "saveChecklistSuccessDescription": "Your checklist has been saved to local storage.",
   "saveChecklistButtonTooltip": "Save your current checklist",
-  "changeLanguage": "Change language"
+  "changeLanguage": "Change language",
+  "savedChecklistTitle": "Your Saved Checklist",
+  "editInModalPromptTitle": "Edit Item",
+  "editInModalPromptDescription": "To edit the text of an item, please open the checklist editor using the '+' button."
 }
+
