@@ -62,5 +62,8 @@
   "itemUpdatedToastDescription": "Item \"{itemText}\" has been updated.",
   "itemTextCannotBeEmptyTitle": "Cannot Save Empty Item",
   "itemTextCannotBeEmptyDescription": "Item text cannot be empty. Edit cancelled.",
-  "openChecklistAppButton": "Open Voice Checklist"
+  "openChecklistAppButton": "Open Voice Checklist",
+  "saveChecklistButton": "Save Checklist",
+  "saveChecklistSuccessTitle": "Checklist Saved",
+  "saveChecklistSuccessDescription": "Your checklist has been saved to local storage."
 }

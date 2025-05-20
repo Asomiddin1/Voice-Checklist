@@ -62,5 +62,8 @@
   "itemUpdatedToastDescription": "\"{itemText}\" elementi yangilandi.",
   "itemTextCannotBeEmptyTitle": "Bo'sh Elementni Saqlab Bo'lmaydi",
   "itemTextCannotBeEmptyDescription": "Element matni bo'sh bo'lishi mumkin emas. Tahrirlash bekor qilindi.",
-  "openChecklistAppButton": "Ovozli Ro'yxatni Ochish"
+  "openChecklistAppButton": "Ovozli Ro'yxatni Ochish",
+  "saveChecklistButton": "Ro'yxatni Saqlash",
+  "saveChecklistSuccessTitle": "Ro'yxat Saqlandi",
+  "saveChecklistSuccessDescription": "Sizning nazorat ro'yxatingiz mahalliy xotiraga saqlandi."
 }

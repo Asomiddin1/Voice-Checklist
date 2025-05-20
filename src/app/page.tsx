@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import VoiceRecorder from '@/components/voice-recorder';
@@ -13,10 +13,11 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader } from 'lucide-react';
+import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave } from 'lucide-react';
 import VoiceCommandsModal from '@/components/voice-commands-modal';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 async function blobToDataURI(blob: Blob): Promise<string> {
@@ -65,6 +66,23 @@ export default function VoiceChecklistPage() {
       }
     }
   }, [items, isMounted]);
+
+  const handleSaveToLocalStorage = () => {
+    try {
+      localStorage.setItem('checklistItems', JSON.stringify(items));
+      toast({
+        title: t('saveChecklistSuccessTitle'),
+        description: t('saveChecklistSuccessDescription'),
+      });
+    } catch (error) {
+      console.error("Failed to save items to localStorage explicitly", error);
+      toast({
+        title: t('errorProcessingVoiceTitle'), // Generic error title
+        description: t('unexpectedError'),
+        variant: "destructive",
+      });
+    }
+  };
 
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
@@ -167,7 +185,7 @@ export default function VoiceChecklistPage() {
       text,
       completed: false,
     }));
-    setItems(prevItems => [...prevItems, ...newItems]);
+    setItems(prevItems => [...newItems, ...prevItems]); // Add new items to the top
     if (showToast && newItems.length === 1) {
        toast({
         title: t('itemAddedToastTitle'),
@@ -244,7 +262,7 @@ export default function VoiceChecklistPage() {
     setEditingItemId(null);
   };
 
-  if (!isMounted || !t('voiceChecklistTitle')) {
+  if (!isMounted || !t('voiceChecklistTitle')) { // Check for a key translation to ensure context is ready
      return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
         <IconLoader className="h-16 w-16 animate-spin text-primary" />
@@ -254,13 +272,28 @@ export default function VoiceChecklistPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
+    <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogTrigger asChild>
-          <Button size="lg" className="px-8 py-6 text-xl shadow-lg hover:shadow-xl transition-shadow">
-            {t('openChecklistAppButton')}
-          </Button>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="fixed bottom-8 right-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow"
+                  aria-label={t('openChecklistAppButton')}
+                >
+                  <IconPlus className="h-8 w-8" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="left" sideOffset={10}>
+              <p>{t('openChecklistAppButton')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
         <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
           <div className="flex-shrink-0 p-4 flex justify-end items-center border-b bg-muted/30">
             <LanguageSwitcher />
@@ -310,9 +343,15 @@ export default function VoiceChecklistPage() {
                   disabled={isLoading}
                 />
               </CardContent>
-              <footer className="flex-shrink-0 p-4 text-center text-sm text-muted-foreground border-t">
-                <p>{t('footerText', { year: new Date().getFullYear() })}</p>
-              </footer>
+              <CardFooter className="flex-shrink-0 p-4 border-t flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+                <Button onClick={handleSaveToLocalStorage} variant="outline" size="sm" className="w-full sm:w-auto">
+                  <IconSave className="mr-2 h-4 w-4" />
+                  {t('saveChecklistButton')}
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  {t('footerText', { year: new Date().getFullYear() })}
+                </p>
+              </CardFooter>
             </Card>
           </div>
         </DialogContent>

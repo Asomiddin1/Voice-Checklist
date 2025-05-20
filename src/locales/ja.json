@@ -62,5 +62,8 @@
   "itemUpdatedToastDescription": "アイテム「{itemText}」が更新されました。",
   "itemTextCannotBeEmptyTitle": "空のアイテムは保存できません",
   "itemTextCannotBeEmptyDescription": "アイテムのテキストは空にできません。編集はキャンセルされました。",
-  "openChecklistAppButton": "音声チェックリストを開く"
+  "openChecklistAppButton": "音声チェックリストを開く",
+  "saveChecklistButton": "チェックリストを保存",
+  "saveChecklistSuccessTitle": "チェックリストが保存されました",
+  "saveChecklistSuccessDescription": "チェックリストがローカルストレージに保存されました。"
 }
