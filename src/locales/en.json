@@ -1,6 +1,6 @@
 
 {
-  "voiceChecklistTitle": "Voice Checklist",
+  "voiceChecklistTitle": "Voice Checklist Editor",
   "voiceChecklistDescription": "Speak your tasks, or type them in. Get organized effortlessly!",
   "recordVoiceButton": "Record Voice",
   "stopRecordingButton": "Stop Recording",
@@ -70,6 +70,13 @@
   "changeLanguage": "Change language",
   "savedChecklistTitle": "Your Saved Checklist",
   "editInModalPromptTitle": "Edit Item",
-  "editInModalPromptDescription": "To edit the text of an item, please open the checklist editor using the '+' button."
+  "editInModalPromptDescription": "To edit the text of an item, please open the checklist editor using the '+' button.",
+  "notesTitle": "Notes",
+  "folderAriaLabel": "Open folder",
+  "settingsAriaLabel": "Open settings",
+  "notesBottomNav": "Notes",
+  "tasksBottomNav": "Tasks"
 }
 
+
+    

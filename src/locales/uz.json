@@ -1,6 +1,6 @@
 
 {
-  "voiceChecklistTitle": "Ovozli Nazorat Ro'yxati",
+  "voiceChecklistTitle": "Ovozli Ro'yxat Muharriri",
   "voiceChecklistDescription": "Vazifalaringizni ayting yoki yozing. Osonlik bilan tartibga soling!",
   "recordVoiceButton": "Ovoz Yozish",
   "stopRecordingButton": "Yozishni To'xtatish",
@@ -70,6 +70,13 @@
   "changeLanguage": "Tilni o'zgartirish",
   "savedChecklistTitle": "Sizning Saqlangan Ro'yxatingiz",
   "editInModalPromptTitle": "Elementni Tahrirlash",
-  "editInModalPromptDescription": "Element matnini tahrirlash uchun '+' tugmasi yordamida ro'yxat muharririni oching."
+  "editInModalPromptDescription": "Element matnini tahrirlash uchun '+' tugmasi yordamida ro'yxat muharririni oching.",
+  "notesTitle": "Qaydlar",
+  "folderAriaLabel": "Jildni ochish",
+  "settingsAriaLabel": "Sozlamalarni ochish",
+  "notesBottomNav": "Qaydlar",
+  "tasksBottomNav": "Vazifalar"
 }
 
+
+    

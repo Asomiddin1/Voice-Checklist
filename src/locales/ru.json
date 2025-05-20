@@ -1,6 +1,6 @@
 
 {
-  "voiceChecklistTitle": "Голосовой список дел",
+  "voiceChecklistTitle": "Редактор голосового списка",
   "voiceChecklistDescription": "Произнесите свои задачи или введите их. Организуйтесь без усилий!",
   "recordVoiceButton": "Записать голос",
   "stopRecordingButton": "Остановить запись",
@@ -70,6 +70,13 @@
   "changeLanguage": "Изменить язык",
   "savedChecklistTitle": "Ваш сохраненный список",
   "editInModalPromptTitle": "Редактировать элемент",
-  "editInModalPromptDescription": "Для редактирования текста элемента, пожалуйста, откройте редактор списка с помощью кнопки «+»."
+  "editInModalPromptDescription": "Для редактирования текста элемента, пожалуйста, откройте редактор списка с помощью кнопки «+».",
+  "notesTitle": "Заметки",
+  "folderAriaLabel": "Открыть папку",
+  "settingsAriaLabel": "Открыть настройки",
+  "notesBottomNav": "Заметки",
+  "tasksBottomNav": "Задачи"
 }
 
+
+    

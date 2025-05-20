@@ -1,6 +1,6 @@
 
 {
-  "voiceChecklistTitle": "音声チェックリスト",
+  "voiceChecklistTitle": "音声チェックリストエディタ",
   "voiceChecklistDescription": "タスクを話すか入力してください。簡単に整理しましょう！",
   "recordVoiceButton": "音声を録音",
   "stopRecordingButton": "録音停止",
@@ -70,6 +70,13 @@
   "changeLanguage": "言語を変更",
   "savedChecklistTitle": "保存されたチェックリスト",
   "editInModalPromptTitle": "アイテムを編集",
-  "editInModalPromptDescription": "アイテムのテキストを編集するには、「+」ボタンを使ってチェックリストエディタを開いてください。"
+  "editInModalPromptDescription": "アイテムのテキストを編集するには、「+」ボタンを使ってチェックリストエディタを開いてください。",
+  "notesTitle": "ノート",
+  "folderAriaLabel": "フォルダを開く",
+  "settingsAriaLabel": "設定を開く",
+  "notesBottomNav": "ノート",
+  "tasksBottomNav": "タスク"
 }
 
+
+    

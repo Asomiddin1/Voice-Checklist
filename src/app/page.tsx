@@ -13,7 +13,7 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave } from 'lucide-react';
+import { Loader2 as IconLoader, Plus as IconPlus, Save as IconSave, Folder as IconFolder, Settings as IconSettings, List as IconList, CheckSquare as IconCheckSquare } from 'lucide-react';
 import VoiceCommandsModal from '@/components/voice-commands-modal';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ export default function VoiceChecklistPage() {
       console.error("Failed to load items from localStorage", error);
       setShowListOnMainPage(false);
     }
-  }, []); // Run once on mount
+  }, []);
 
   useEffect(() => {
     if (isMounted) {
@@ -87,9 +87,9 @@ export default function VoiceChecklistPage() {
       if (items.length > 0) {
         setShowListOnMainPage(true);
       } else {
-        setShowListOnMainPage(false); // If saved list is empty, don't show it on main.
+        setShowListOnMainPage(false);
       }
-      setIsModalOpen(false); // Close the modal
+      setIsModalOpen(false); 
     } catch (error) {
       console.error("Failed to save items to localStorage explicitly", error);
       toast({
@@ -243,7 +243,7 @@ export default function VoiceChecklistPage() {
     if (editingItemId === id) setEditingItemId(null);
     setItems(prevItems => {
         const newItems = prevItems.filter(item => item.id !== id);
-        if (newItems.length === 0 && showListOnMainPage) { // If list displayed on main page becomes empty
+        if (newItems.length === 0 && showListOnMainPage) { 
             setShowListOnMainPage(false);
         }
         return newItems;
@@ -285,11 +285,10 @@ export default function VoiceChecklistPage() {
   };
   
   const handleOpenModal = () => {
-    // If items are loaded, ensure they are current when modal opens
     const storedItems = localStorage.getItem('checklistItems');
     if (storedItems) {
       const parsedItems = JSON.parse(storedItems);
-      setItems(parsedItems); // Refresh items from storage
+      setItems(parsedItems); 
     }
     setIsModalOpen(true);
   };
@@ -297,7 +296,7 @@ export default function VoiceChecklistPage() {
 
   if (!isMounted || !t('voiceChecklistTitle')) { 
      return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
+      <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-background">
         <IconLoader className="h-16 w-16 animate-spin text-primary" />
         <p className="mt-4 text-lg text-foreground">{t('loadingChecklist')}</p>
       </div>
@@ -305,17 +304,51 @@ export default function VoiceChecklistPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      {/* Header */}
+      <header className="p-4 flex justify-between items-center">
+        <h1 className="text-3xl font-bold">{t('notesTitle')}</h1>
+        <div className="flex space-x-3">
+          <Button variant="ghost" size="icon" aria-label={t('folderAriaLabel')}>
+            <IconFolder className="h-6 w-6" />
+          </Button>
+          <Button variant="ghost" size="icon" aria-label={t('settingsAriaLabel')}>
+            <IconSettings className="h-6 w-6" />
+          </Button>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <main className="flex-grow p-4 space-y-4">
+        {showListOnMainPage && items.length > 0 && (
+          <Card className="w-full max-w-md shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">{t('savedChecklistTitle')}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+              <ul className="space-y-1">
+                {items.slice(0, 4).map(item => (
+                  <li key={item.id} className={`text-sm ${item.completed ? 'line-through text-muted-foreground' : ''}`}>
+                    {item.text}
+                  </li>
+                ))}
+                {items.length > 4 && <li className="text-sm text-muted-foreground">...</li>}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+      </main>
+
+      {/* FAB to open modal */}
       <TooltipProvider>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <Tooltip>
             <TooltipTrigger asChild>
               <DialogTrigger asChild>
-                 {/* We now call handleOpenModal directly */}
                 <Button
                   variant="default"
                   size="lg"
-                  className="fixed bottom-8 right-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50"
+                  className="fixed bottom-20 right-6 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50 bg-amber-500 hover:bg-amber-600 text-white"
                   aria-label={t('openChecklistAppButton')}
                   onClick={handleOpenModal} 
                 >
@@ -331,7 +364,7 @@ export default function VoiceChecklistPage() {
           <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
             <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
               <div className="invisible">
-                <LanguageSwitcher />
+                <LanguageSwitcher /> {/* Kept for spacing, actual one below */}
               </div>
               <h2 className="text-lg font-semibold text-foreground">{t('voiceChecklistTitle')}</h2>
               <LanguageSwitcher />
@@ -397,33 +430,20 @@ export default function VoiceChecklistPage() {
         </Dialog>
       </TooltipProvider>
 
-      {showListOnMainPage && items.length > 0 && (
-        <Card className="my-12 w-full max-w-2xl shadow-xl bg-card text-card-foreground">
-          <CardHeader>
-            <CardTitle className="text-center text-2xl font-semibold">{t('savedChecklistTitle')}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-4 md:p-6">
-            <ChecklistDisplay
-              items={items}
-              onToggleItem={handleToggleItem}
-              onDeleteItem={handleDeleteItem}
-              editingItemId={null}
-              onStartEdit={() => { 
-                toast({ 
-                  title: t('editInModalPromptTitle'), 
-                  description: t('editInModalPromptDescription'),
-                  duration: 5000 
-                });
-                handleOpenModal(); // Open the modal for editing
-              }}
-              onSaveEditText={() => {}} // No-op on main page
-              onCancelEdit={() => {}}   // No-op on main page
-              disabled={false} 
-            />
-          </CardContent>
-        </Card>
-      )}
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-md flex justify-around items-center p-2 h-16 z-40">
+        <Button variant="ghost" className="flex flex-col items-center h-full text-primary">
+          <IconList className="h-6 w-6 mb-0.5" />
+          <span className="text-xs">{t('notesBottomNav')}</span>
+        </Button>
+        <Button variant="ghost" className="flex flex-col items-center h-full text-muted-foreground">
+          <IconCheckSquare className="h-6 w-6 mb-0.5" />
+          <span className="text-xs">{t('tasksBottomNav')}</span>
+        </Button>
+      </nav>
     </div>
   );
 }
+    
+
     
