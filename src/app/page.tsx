@@ -274,22 +274,7 @@ export default function VoiceChecklistPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary flex items-center justify-center p-4">
       <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="lg"
-              className="fixed bottom-8 left-8 h-16 w-16 rounded-full p-0 shadow-xl hover:shadow-2xl transition-shadow z-50"
-              aria-label={t('saveChecklistButton')}
-              onClick={handleSaveToLocalStorage}
-            >
-              <IconSave className="h-8 w-8" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={10}>
-            <p>{t('saveChecklistButtonTooltip')}</p>
-          </TooltipContent>
-        </Tooltip>
+        {/* Save button FAB removed from here */}
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <Tooltip>
@@ -313,8 +298,8 @@ export default function VoiceChecklistPage() {
           <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
             {/* Navbar area */}
             <div className="flex-shrink-0 p-4 flex justify-between items-center border-b bg-muted/30">
-              <div className="invisible"> {/* Placeholder for left side if needed */}
-                <LanguageSwitcher />
+              <div className="invisible"> {/* Placeholder for left side if needed, or can be removed if not centering title */}
+                <LanguageSwitcher /> {/* This could be a duplicate if switcher is also on right, adjust as needed */}
               </div>
               <h2 className="text-lg font-semibold text-foreground">{t('voiceChecklistTitle')}</h2>
               <LanguageSwitcher />
@@ -323,7 +308,6 @@ export default function VoiceChecklistPage() {
             <div className="flex-grow overflow-y-auto">
               <Card className="w-full h-full shadow-none border-none rounded-none flex flex-col">
                 <CardHeader className="bg-primary text-primary-foreground text-center p-6 flex-shrink-0">
-                  {/* Title moved to modal navbar, description can remain or be removed */}
                   <CardDescription className="text-primary-foreground/80 text-sm">
                     {t('voiceChecklistDescription')}
                   </CardDescription>
@@ -361,8 +345,16 @@ export default function VoiceChecklistPage() {
                     disabled={isLoading}
                   />
                 </CardContent>
-                <CardFooter className="flex-shrink-0 p-4 border-t flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0">
-                  {/* Save button moved to main page */}
+                <CardFooter className="flex-shrink-0 p-4 border-t flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+                  <Button
+                    variant="default"
+                    onClick={handleSaveToLocalStorage}
+                    aria-label={t('saveChecklistButton')}
+                    className="gap-2"
+                  >
+                    <IconSave className="h-5 w-5" />
+                    {t('saveChecklistButton')}
+                  </Button>
                   <p className="text-center text-xs text-muted-foreground">
                     {t('footerText', { year: new Date().getFullYear() })}
                   </p>
@@ -376,3 +368,4 @@ export default function VoiceChecklistPage() {
   );
 }
 
+    
