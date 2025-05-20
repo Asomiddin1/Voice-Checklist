@@ -61,5 +61,6 @@
   "itemUpdatedToastTitle": "アイテムが更新されました",
   "itemUpdatedToastDescription": "アイテム「{itemText}」が更新されました。",
   "itemTextCannotBeEmptyTitle": "空のアイテムは保存できません",
-  "itemTextCannotBeEmptyDescription": "アイテムのテキストは空にできません。編集はキャンセルされました。"
+  "itemTextCannotBeEmptyDescription": "アイテムのテキストは空にできません。編集はキャンセルされました。",
+  "openChecklistAppButton": "音声チェックリストを開く"
 }

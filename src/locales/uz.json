@@ -61,5 +61,6 @@
   "itemUpdatedToastTitle": "Element Yangilandi",
   "itemUpdatedToastDescription": "\"{itemText}\" elementi yangilandi.",
   "itemTextCannotBeEmptyTitle": "Bo'sh Elementni Saqlab Bo'lmaydi",
-  "itemTextCannotBeEmptyDescription": "Element matni bo'sh bo'lishi mumkin emas. Tahrirlash bekor qilindi."
+  "itemTextCannotBeEmptyDescription": "Element matni bo'sh bo'lishi mumkin emas. Tahrirlash bekor qilindi.",
+  "openChecklistAppButton": "Ovozli Ro'yxatni Ochish"
 }

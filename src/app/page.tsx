@@ -13,8 +13,10 @@ import { speechToText, SpeechToTextInput } from '@/ai/flows/speech-to-text';
 import { processVoiceCommand, ProcessVoiceCommandInput } from '@/ai/flows/process-voice-command';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 as IconLoader } from 'lucide-react'; 
+import { Loader2 as IconLoader } from 'lucide-react';
 import VoiceCommandsModal from '@/components/voice-commands-modal';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 
 async function blobToDataURI(blob: Blob): Promise<string> {
@@ -37,8 +39,9 @@ export default function VoiceChecklistPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
-  const { t, locale } = useLanguage(); 
+  const { t, locale } = useLanguage();
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -65,11 +68,11 @@ export default function VoiceChecklistPage() {
 
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
-    if (editingItemId) setEditingItemId(null); // Cancel edit mode if voice command starts
+    if (editingItemId) setEditingItemId(null);
     setIsLoading(true);
     try {
       const audioDataUri = await blobToDataURI(audioBlob);
-      
+
       const transcriptionInput: SpeechToTextInput = { audioDataUri };
       const transcriptionOutput = await speechToText(transcriptionInput);
 
@@ -82,15 +85,15 @@ export default function VoiceChecklistPage() {
         setIsLoading(false);
         return;
       }
-      
+
       toast({
         title: t('transcriptionSuccessfulTitle'),
         description: t('transcriptionText', { text: transcriptionOutput.text.substring(0,50) }),
       });
 
-      const commandInput: ProcessVoiceCommandInput = { 
+      const commandInput: ProcessVoiceCommandInput = {
         speechTranscription: transcriptionOutput.text,
-        checklistItems: items 
+        checklistItems: items
       };
       const commandOutput = await processVoiceCommand(commandInput);
 
@@ -103,15 +106,15 @@ export default function VoiceChecklistPage() {
         commandOutput.recognizedCommands.forEach(cmd => {
           commandsProcessed++;
           if (cmd.command === 'toggle' && cmd.targetItemId) {
-            handleToggleItem(cmd.targetItemId, false); 
+            handleToggleItem(cmd.targetItemId, false);
             itemsToggled++;
             toast({ title: t('commandProcessedToastTitle'), description: t('itemToggledToastDescription', {itemName: cmd.itemName})});
           } else if (cmd.command === 'delete' && cmd.targetItemId) {
-            handleDeleteItem(cmd.targetItemId, false); 
+            handleDeleteItem(cmd.targetItemId, false);
             itemsDeleted++;
             toast({ title: t('commandProcessedToastTitle'), description: t('itemDeletedByVoiceToastDescription', {itemName: cmd.itemName})});
           } else if (cmd.command === 'add' && cmd.itemName) {
-            addMultipleItems([cmd.itemName], false); 
+            addMultipleItems([cmd.itemName], false);
             itemsAddedFromCommands++;
           }
         });
@@ -121,7 +124,7 @@ export default function VoiceChecklistPage() {
         addMultipleItems(commandOutput.newItemsFromSpeech, false);
         itemsAddedFromCommands += commandOutput.newItemsFromSpeech.length;
       }
-      
+
       if (itemsAddedFromCommands > 0) {
          toast({
           title: t('itemsAddedToastTitle'),
@@ -158,7 +161,7 @@ export default function VoiceChecklistPage() {
   };
 
   const addMultipleItems = (texts: string[], showToast: boolean = true) => {
-    if (editingItemId) setEditingItemId(null); 
+    if (editingItemId) setEditingItemId(null);
     const newItems: ChecklistItemType[] = texts.map(text => ({
       id: crypto.randomUUID(),
       text,
@@ -177,13 +180,13 @@ export default function VoiceChecklistPage() {
       });
     }
   };
-  
+
   const handleAddItemManually = (text: string) => {
     addMultipleItems([text]);
   };
 
   const handleToggleItem = (id: string, showToast: boolean = true) => {
-    if (editingItemId) setEditingItemId(null); 
+    if (editingItemId) setEditingItemId(null);
     let itemName = "";
     setItems(prevItems =>
       prevItems.map(item => {
@@ -224,7 +227,7 @@ export default function VoiceChecklistPage() {
         description: t('itemTextCannotBeEmptyDescription'),
         variant: 'destructive',
       });
-      setEditingItemId(null); // Exit edit mode if text is empty
+      setEditingItemId(null);
       return;
     }
     setItems(prevItems =>
@@ -240,8 +243,8 @@ export default function VoiceChecklistPage() {
   const handleCancelEdit = () => {
     setEditingItemId(null);
   };
-  
-  if (!isMounted || !t('voiceChecklistTitle')) { 
+
+  if (!isMounted || !t('voiceChecklistTitle')) {
      return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
         <IconLoader className="h-16 w-16 animate-spin text-primary" />
@@ -251,57 +254,69 @@ export default function VoiceChecklistPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
-      <div className="w-full max-w-2xl mb-4 flex justify-end">
-        <LanguageSwitcher />
-      </div>
-      <Card className="w-full max-w-2xl shadow-2xl rounded-xl overflow-hidden">
-        <CardHeader className="bg-primary text-primary-foreground text-center p-6">
-          <CardTitle className="text-3xl font-bold tracking-tight">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-2 mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
-            {t('voiceChecklistTitle')}
-          </CardTitle>
-          <CardDescription className="text-primary-foreground/80 text-sm">
-            {t('voiceChecklistDescription')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6 space-y-6">
-          <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20 space-y-3">
-             <VoiceRecorder 
-                onRecordingComplete={handleRecordingComplete} 
-                onRecordingError={handleRecordingError}
-                isProcessing={isLoading}
-             />
-             <div className="flex justify-center">
-                <VoiceCommandsModal />
-             </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Separator className="flex-grow" />
-            <span className="text-xs text-muted-foreground font-medium">{t('orSeparator')}</span>
-            <Separator className="flex-grow" />
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background to-secondary">
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
+          <Button size="lg" className="px-8 py-6 text-xl shadow-lg hover:shadow-xl transition-shadow">
+            {t('openChecklistAppButton')}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-xl shadow-2xl">
+          <div className="flex-shrink-0 p-4 flex justify-end items-center border-b bg-muted/30">
+            <LanguageSwitcher />
           </div>
 
-          <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading || !!editingItemId} />
-          
-          <Separator />
+          <div className="flex-grow overflow-y-auto">
+            <Card className="w-full h-full shadow-none border-none rounded-none flex flex-col">
+              <CardHeader className="bg-primary text-primary-foreground text-center p-6 flex-shrink-0">
+                <CardTitle className="text-3xl font-bold tracking-tight">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-2 mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                  {t('voiceChecklistTitle')}
+                </CardTitle>
+                <CardDescription className="text-primary-foreground/80 text-sm">
+                  {t('voiceChecklistDescription')}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-4 md:p-6 space-y-6 flex-grow">
+                <div className="p-4 border border-dashed border-border rounded-lg bg-muted/20 space-y-3">
+                   <VoiceRecorder
+                      onRecordingComplete={handleRecordingComplete}
+                      onRecordingError={handleRecordingError}
+                      isProcessing={isLoading}
+                   />
+                   <div className="flex justify-center">
+                      <VoiceCommandsModal />
+                   </div>
+                </div>
 
-          <ChecklistDisplay
-            items={items}
-            onToggleItem={handleToggleItem}
-            onDeleteItem={handleDeleteItem}
-            onStartEdit={handleStartEdit}
-            onSaveEditText={handleSaveEditText}
-            onCancelEdit={handleCancelEdit}
-            editingItemId={editingItemId}
-            disabled={isLoading}
-          />
-        </CardContent>
-      </Card>
-       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>{t('footerText', { year: new Date().getFullYear() })}</p>
-      </footer>
+                <div className="flex items-center space-x-2">
+                  <Separator className="flex-grow" />
+                  <span className="text-xs text-muted-foreground font-medium">{t('orSeparator')}</span>
+                  <Separator className="flex-grow" />
+                </div>
+
+                <ManualAddForm onAddItem={handleAddItemManually} disabled={isLoading || !!editingItemId} />
+
+                <Separator />
+
+                <ChecklistDisplay
+                  items={items}
+                  onToggleItem={handleToggleItem}
+                  onDeleteItem={handleDeleteItem}
+                  onStartEdit={handleStartEdit}
+                  onSaveEditText={handleSaveEditText}
+                  onCancelEdit={handleCancelEdit}
+                  editingItemId={editingItemId}
+                  disabled={isLoading}
+                />
+              </CardContent>
+              <footer className="flex-shrink-0 p-4 text-center text-sm text-muted-foreground border-t">
+                <p>{t('footerText', { year: new Date().getFullYear() })}</p>
+              </footer>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -61,5 +61,6 @@
   "itemUpdatedToastTitle": "Задача обновлена",
   "itemUpdatedToastDescription": "Задача «{itemText}» была обновлена.",
   "itemTextCannotBeEmptyTitle": "Нельзя сохранить пустую задачу",
-  "itemTextCannotBeEmptyDescription": "Текст задачи не может быть пустым. Редактирование отменено."
+  "itemTextCannotBeEmptyDescription": "Текст задачи не может быть пустым. Редактирование отменено.",
+  "openChecklistAppButton": "Открыть Голосовой Список"
 }

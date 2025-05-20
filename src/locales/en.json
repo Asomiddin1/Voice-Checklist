@@ -61,5 +61,6 @@
   "itemUpdatedToastTitle": "Item Updated",
   "itemUpdatedToastDescription": "Item \"{itemText}\" has been updated.",
   "itemTextCannotBeEmptyTitle": "Cannot Save Empty Item",
-  "itemTextCannotBeEmptyDescription": "Item text cannot be empty. Edit cancelled."
+  "itemTextCannotBeEmptyDescription": "Item text cannot be empty. Edit cancelled.",
+  "openChecklistAppButton": "Open Voice Checklist"
 }
